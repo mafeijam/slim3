@@ -1,0 +1,97 @@
+{% extends 'default.twig' %}
+
+{% block body %}
+   <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+         <div class="panel panel-info">
+
+            <div class="panel-heading" style="font-size: 150%; text-align: center;">會員註冊</div>
+
+            <div class="panel-body">
+               <form action="/register" method="post" autocomplete="off">
+                  {{ csrf_field | raw }}
+                  <div class="form-group">
+                     <label style="font-size: 110%; margin-bottom: 10px;" for="username">使用者名稱</label>
+                     <div class="input-group has-feedback {{ errors.username ? 'has-error' : ''}}">
+                        <span class="input-group-addon"><i class="fa fa-user w-30"></i></span>
+                        <input class="form-control" type="text" name="username" id="username" value="{{ old.username }}">
+                        {% if errors.username %}
+                           <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                        {% endif %}
+                     </div>
+                     {% if errors.username %}
+                        <span class="help-block">
+                           <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ errors.username | first }}
+                        </span>
+                     {% endif %}
+
+                  </div>
+
+                  <div class="form-group">
+                     <label style="font-size: 110%; margin-bottom: 10px;" for="email">電郵</label>
+                     <div class="input-group has-feedback {{ errors.email ? 'has-error' : ''}}">
+                        <span class="input-group-addon"><i class="fa fa-envelope-o w-30"></i></span>
+                        <input class="form-control" type="text" name="email" id="email" value="{{ old.email }}">
+                        {% if errors.email %}
+                           <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                        {% endif %}
+                     </div>
+                     {% if errors.email %}
+                        <span class="help-block">
+                           <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ errors.email | first }}
+                        </span>
+                     {% endif %}
+
+                  </div>
+
+                  <div class="form-group">
+                     <label style="font-size: 110%; margin-bottom: 10px;" for="password">密碼</label>
+                     <div class="input-group has-feedback {{ errors.password ? 'has-error' : ''}}">
+                        <span class="input-group-addon"><i class="fa fa-key w-30"></i></span>
+                        <input class="form-control" type="password" name="password" id="password">
+                        {% if errors.password %}
+                           <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                        {% endif %}
+                     </div>
+                     {% if errors.password %}
+                        <span class="help-block">
+                           <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ errors.password | first }}
+                        </span>
+                     {% endif %}
+
+                  </div>
+
+                  <div class="form-group">
+                     <label style="font-size: 110%; margin-bottom: 10px;" for="password_cfm">密碼確認</label>
+                     <div class="input-group has-feedback {{ errors.password_cfm ? 'has-error' : ''}}">
+                        <span class="input-group-addon"><i class="fa fa-key w-30"></i></span>
+                        <input class="form-control" type="password" name="password_cfm" id="password_cfm">
+                        {% if errors.password_cfm %}
+                           <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                        {% endif %}
+                     </div>
+                     {% if errors.password_cfm %}
+                        <span class="help-block">
+                           <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ errors.password_cfm | first }}
+                        </span>
+                     {% endif %}
+
+                  </div>
+
+                  <div class="t-right">
+                     <button class="btn btn-primary"><i class="fa fa-check mr-7"></i>註冊</button>
+                  </div>
+
+               </form>
+            </div> <!-- end panel body -->
+         </div> <!-- end panel -->
+
+         {% if errors.bottom %}
+            {% include 'partial/errors-bottom.twig' with errors %}
+         {% endif %}
+
+      </div> <!-- end col -->
+   </div> <!-- end row -->
+
+   <script src="/js/form.js"></script>
+{% endblock %}

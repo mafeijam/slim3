@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>開心 Share</title>
+      <link href="https://fonts.googleapis.com/css?family=Baloo+Tamma" rel="stylesheet">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <link rel="stylesheet" href="/css/style.css">
+      <link rel="stylesheet" href="/css/nprogress.css">
+      <link rel="stylesheet" href="/fontawesome/css/font-awesome.min.css">
+      <link rel="stylesheet" href="/css/animate.css">
+      <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+   </head>
+   <body>
+      {% include 'partial/nav.twig' %}
+
+      <div class="container" id="pjax">
+         <div style="display: flex; justify-content: center;">
+            <div style="position: fixed; width: 300px; z-index: 999999; top: 10px;" class="animated flipInX">
+               {% if success %}
+                  <div class="alert alert-success disappear" style="text-align: center;" role="alert">
+                     <i class="fa fa-check" aria-hidden="true"></i> {{ success }}
+                  </div>
+               {% endif %}
+
+               {% if errors.message %}
+                  <div class="alert alert-danger disappear" style="text-align: center;" role="alert">
+                     <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ errors.message }}
+                  </div>
+               {% endif %}
+            </div>
+         </div>
+         {% block body %}{% endblock %}
+      </div>
+
+      {% if isDesktop %}
+         <script src="/js/nprogress.js"></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.pjax/1.9.6/jquery.pjax.min.js"></script>
+         <script src="/js/pjax.js"></script>
+      {% endif %}
+
+      <script>
+         $('.disappear').delay(3500).fadeOut(1000)
+         $('body').on('click', '.disappear', function(){
+            $('.disappear').stop()
+         })
+
+         $('body').on('click', 'button', function(){
+            $(this).button('loading')
+         })
+      </script>
+
+   </body>
+</html>

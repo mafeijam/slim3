@@ -1,0 +1,55 @@
+@import url(http://fonts.googleapis.com/earlyaccess/notosanstc.css);
+
+body {
+   padding-top: 70px;
+   font-family: 'Noto Sans TC';
+   background: url(/bg/geometry2.png) repeat;
+   color: #1C1C1C;
+}
+
+a, button, input.form-control, textarea.form-control {
+   transition: .5s;
+}
+
+input.form-control, textarea.form-control {
+    border: 1px dashed #ccc;
+    box-shadow: none;
+    background: #FFFFFB;
+}
+
+input.form-control:focus, textarea.form-control:focus {
+   border: 1px dashed #828282;
+   box-shadow: none;
+}
+
+.gravatar {
+   border-radius: 10%;
+   margin: 0 10px 0 0;
+   padding: 0;
+}
+
+.mr-7 {
+   margin-right: 7px;
+}
+
+.t-right {
+   width: 100%;
+   text-align: right;
+}
+
+.w-30 {
+   width: 30px;
+}
+
+.profile {
+   color: #828282;
+   font-weight: 700;
+}
+
+.disappear {
+  cursor: pointer;
+}
+
+#gravatar-link {
+   padding: 12px 10px 10px 10px;
+}
