@@ -4,39 +4,33 @@ use Respect\Validation\Validator as v;
 
 v::with('App\\Validation\\Rules');
 
-/*$container['customErrors'] = function($c) {
+$container['customErrors'] = function($c) {
    return [
-      'notEmpty' => '{{name}} 必填',
-      'email'    => '不是有效電郵',
+      'notEmpty'     => '{{name}} 必填',
+      'email'        => '不是有效電郵',
       'noWhitespace' => '{{name}} 不能有空白',
       'length'       => '{{name}} 必須最少 {{minValue}} 個字',
       'equals'       => '密碼不匹配'
    ];
-};*/
+};
 
 $container['forgetValidator'] = function($c) {
    $rules = [
       'email' => v::notEmpty()->email()->setName('電郵'),
    ];
 
-   $customErrors = [
-      'notEmpty' => '{{name}} 必填',
-      'email'    => '不是有效電郵',
-   ];
+   $customErrors = array_get($c['customErrors'], ['notEmpty', 'email']);
 
    return new App\Middleware\Validator($rules, $customErrors, 'forget');
 };
 
 $container['loginValidator'] = function($c) {
    $rules = [
-      'username' => v::notEmpty()->noWhitespace()->setName('使用者名稱'),
-      'password' => v::notEmpty()->noWhitespace()->setName('密碼'),
+      'username' => v::notEmpty()->setName('使用者名稱'),
+      'password' => v::notEmpty()->setName('密碼'),
    ];
 
-   $customErrors = [
-      'notEmpty'     => '{{name}} 必填',
-      'noWhitespace' => '{{name}} 不能有空白',
-   ];
+   $customErrors = array_get($c['customErrors'], ['notEmpty']);
 
    return new App\Middleware\Validator($rules, $customErrors, 'login');
 };
@@ -49,13 +43,7 @@ $container['registerValidator'] = function($c) {
       'email'        => v::notEmpty()->email()->unique($c['db'], 'users', 'email')->setName('電郵')
    ];
 
-   $customErrors = [
-      'notEmpty'     => '{{name}} 必填',
-      'noWhitespace' => '{{name}} 不能有空白',
-      'length'       => '{{name}} 必須最少 {{minValue}} 個字',
-      'email'        => '不是有效電郵',
-      'equals'       => '密碼不匹配'
-   ];
+   $customErrors = array_get($c['customErrors'], ['notEmpty', 'noWhitespace', 'length', 'equals', 'email']);
 
    return new App\Middleware\Validator($rules, $customErrors, 'register');
 };
@@ -67,12 +55,7 @@ $container['changePasswordValidator'] = function($c) {
       'password_cfm' => v::equals($c['request']->getParam('new_password')),
    ];
 
-   $customErrors = [
-      'notEmpty'     => '{{name}} 必填',
-      'noWhitespace' => '{{name}} 不能有空白',
-      'length'       => '{{name}} 必須最少 {{minValue}} 個字',
-      'equals'       => '密碼不匹配'
-   ];
+   $customErrors = array_get($c['customErrors'], ['notEmpty', 'noWhitespace', 'length', 'equals']);
 
    return new App\Middleware\Validator($rules, $customErrors, 'changepassword', $c['auth']->user()->id);
 };
@@ -83,9 +66,7 @@ $container['updateValidator'] = function($c) {
       'website' => v::optional(v::website()->setName('個人網站'))
    ];
 
-   $customErrors = [
-      'email' => '不是有效電郵'
-   ];
+   $customErrors = array_get($c['customErrors'], ['email']);
 
    return new App\Middleware\Validator($rules, $customErrors, 'update', $c['auth']->user()->id);
 };
