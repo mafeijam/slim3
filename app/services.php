@@ -43,8 +43,16 @@ $container['guard'] = function($c) {
    return new App\Middleware\Guard($c['auth']);
 };
 
+$container['permission'] = function($c) {
+   return new App\Middleware\Permission($c['auth']);
+};
+
+$container['notActiveOnly'] = function($c) {
+   return new App\Middleware\NotActiveOnly($c['auth']);
+};
+
 $container['AuthController'] = function($c) {
-   return new App\Controller\AuthController($c['db'], $c['view'], $c['mailer'], $c['auth'], $c['jwt']);
+   return new App\Controller\AuthController($c['db'], $c['mailer'], $c['auth'], $c['jwt']);
 };
 
 $container['PageController'] = function($c) {

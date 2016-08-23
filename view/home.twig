@@ -1,5 +1,72 @@
 {% extends 'default.twig' %}
 
 {% block body %}
+   <div class="row">
+      <div class="col-md-8">
+         <div class="panel panel-info">
+            <div class="panel-heading">分類</div>
+            <div class="panel-body">
+               Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+               tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+               quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+               consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+               cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+               proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </div>
+         {% for i in 0..10 %}
+            <hr>
+            <div class="panel-body">
+               Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+               tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+               quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+               consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+               cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+               proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </div>
+         {% endfor %}
+
+         </div>
+      </div>
+
+      <div class="col-md-4" id="sticky">
+         <div class="panel panel-default">
+            <div class="panel-body" style="text-align: center">
+               <a href="/share" class="btn btn-info btn-lg plink"><i class="fa fa-share mr-7"></i> 發表分享</a>
+            </div>
+         </div>
+
+         <div class="panel panel-success" style="text-align: center">
+            <div class="panel-heading">活躍會員</div>
+            <div class="panel-body">
+               all foo bar
+            </div>
+         </div>
+
+         <div class="panel panel-danger" style="text-align: center">
+            <div class="panel-heading">熱門分享</div>
+            <div class="panel-body">
+               Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+               tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+               quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+               consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+               cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+               proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </div>
+         </div>
+
+         <div class="panel panel-warning" style="text-align: center">
+            <div class="panel-heading">好站連結</div>
+            <div class="panel-body">
+               Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+               tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+               quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+               consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+               cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+               proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </div>
+         </div>
+
+      </div>
+   </div>
 
 {% endblock %}

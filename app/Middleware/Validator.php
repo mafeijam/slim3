@@ -10,23 +10,17 @@ class Validator
    protected $rules = [];
    protected $customErrors = null;
    protected $to;
-   protected $authorize;
    protected $errors = [];
 
-   public function __construct(array $rules, $customErrors = null, $to, $authorize = null)
+   public function __construct(array $rules, $customErrors = null, $to)
    {
       $this->rules = $rules;
       $this->customErrors = $customErrors;
       $this->to = $to;
-      $this->authorize = $authorize;
    }
 
    public function __invoke($req, $res, $next)
    {
-      if ($this->authorize($req, $res) == false) {
-         return $this->abort($req, $res);
-      }
-
       foreach ($this->rules as $key => $rule) {
          try {
             $rule->assert($req->getParam($key));
@@ -48,14 +42,5 @@ class Validator
       $_SESSION['errors'] = array_merge($this->errors, ['message' => '操作失敗']);
       $_SESSION['old'] = $req->getParams();
       return $res->withRedirect($this->to);
-   }
-
-   protected function authorize($req, $res)
-   {
-      if ($this->authorize) {
-         return $this->authorize == $req->getParam('id');
-      }
-
-      return true;
    }
 }

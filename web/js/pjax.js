@@ -9,10 +9,14 @@ $(document).on('pjax:send', function() {
 $(document).on('pjax:end', function() {
    NProgress.done()
    setActive()
+   $('.form-control').eq(0).focus()
+   $('#sticky').stick_in_parent({
+      'offset_top': 70
+   })
 })
 
 function setActive() {
-   $('.main-nav > li').each(function(){
+   $('.main-nav > li.sub-item').each(function(){
       if ($(this).children().attr('href') == document.location.pathname) {
          $(this).addClass('active').siblings().removeClass('active')
       } else {
@@ -20,3 +24,7 @@ function setActive() {
       }
    })
 }
+
+$('#sticky').stick_in_parent({
+   'offset_top': 70
+})

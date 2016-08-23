@@ -3,35 +3,26 @@
 namespace App\Controller;
 
 use PDO;
-use PDOException;
 use App\Mail\Mailer;
 use App\Auth\Guard;
 use Firebase\JWT\JWT;
-use Slim\Views\Twig;
 
 class AuthController
 {
    protected $db;
    protected $jwt;
-   protected $view;
    protected $mailer;
    protected $auth;
 
-   public function __construct(PDO $db, Twig $view, Mailer $mailer, Guard $auth, $jwt)
+   public function __construct(PDO $db, Mailer $mailer, Guard $auth, $jwt)
    {
       $this->db = $db;
       $this->jwt = $jwt;
-      $this->view = $view;
       $this->mailer = $mailer;
       $this->auth = $auth;
    }
 
-   public function getLogin($req, $res)
-   {
-      return $this->view->render($res, 'login.twig');
-   }
-
-   public function postLogin($req, $res)
+   public function login($req, $res)
    {
       extract($this->jwt);
 
@@ -51,20 +42,18 @@ class AuthController
          $token = [
             'user' => [
                'id' => $user->id,
-               'name' => $user->username,
-               'joined_at' => $user->joined_at
+               'name' => $user->username
             ],
             'exp' => $time
          ];
 
-         $_SESSION['success'] = '登入成功';
-
+         flash('success', '登入成功');
          setcookie('token', JWT::encode($token, $key), $time, '', '', false, true);
          return $res->withRedirect('/profile');
       }
 
-      $_SESSION['errors'] = ['bottom' => '使用者名稱或密碼錯誤'];
-      $_SESSION['old'] = $req->getParams();
+      flash('errors', ['bottom' => '使用者名稱或密碼錯誤']);
+      flash('old', $req->getParams());
 
       return $res->withRedirect('/login');
    }
@@ -76,26 +65,16 @@ class AuthController
       return $res->withRedirect('/');
    }
 
-   public function getRegister($req, $res)
-   {
-      return $this->view->render($res, 'register.twig');
-   }
-
-   public function postRegister($req, $res)
+   public function register($req, $res)
    {
       extract($req->getParams());
       $password = password_hash($password, PASSWORD_DEFAULT);
       $code = random_str(32);
 
-      try {
-         $query = $this->db->prepare('insert into users set username = ?, password = ?, email = ?, active_code = ?');
-         $query->execute([$username, $password, $email, $code]);
-      } catch (PDOException $e) {
-         return $res->withJson(['ok' => false, 'bottom' => 'database errors...']);
-      }
+      $this->db->prepare('insert into users set username = ?, password = ?, email = ?, active_code = ?')
+           ->execute([$username, $password, $email, $code]);
 
-      $_SESSION['success'] = '註冊成功，請到你的郵箱查收驗證郵件';
-
+      flash('success', '註冊成功，請到你的郵箱查收驗證郵件');
       $this->mailer->to($email, $username)->send('welcome', ['code' => $code]);
 
       return $res->withRedirect('/login');
@@ -109,13 +88,13 @@ class AuthController
       if ($user = $query->fetch()) {
          $this->db->prepare('update users set active = ?, active_code = ? where id = ?')
               ->execute([1, null, $user->id]);
-         $_SESSION['success'] = '驗證成功';
-         $_SESSION['old'] = ['username' => $user->username];
+         flash('success', '電郵驗證成功');
+         flash('old', ['username' => $user->username]);
          $to = $this->auth->check() ? '/profile' : '/login';
          return $res->withRedirect($to);
       }
 
-      $_SESSION['errors'] = ['message' => '驗證碼錯誤'];
+      flash('errors', ['message' => '驗證碼錯誤']);
       return $res->withRedirect('/');
    }
 
@@ -125,26 +104,15 @@ class AuthController
       $this->db->prepare('update users set active_code = ? where id = ?')
            ->execute([$code, $this->user()->id]);
       $this->mailer->to($this->user()->email, $this->user()->username)->send('welcome', ['code' => $code]);
-      $_SESSION['success'] = '驗證成功發送';
+      flash('success', '驗證成功發送');
       return $res->withRedirect('/profile');
    }
 
-   public function getForget($req, $res)
-   {
-      return $this->view->render($res, 'forget.twig');
-   }
-
-   public function postForget($req, $res)
+   public function forget($req, $res)
    {
       $email = $req->getParam('email');
       $query = $this->db->prepare('select * from users where email = ?');
       $query->execute([$email]);
-
-      if ($query->rowCount() == 0) {
-         $_SESSION['errors'] = ['message' => '此電郵未有用戶註冊'];
-         $_SESSION['old'] = ['email' => $email];
-      }
-
       $newPassword = random_str(8);
       $hash = password_hash($newPassword, PASSWORD_DEFAULT);
       $user = $query->fetch();
@@ -153,42 +121,33 @@ class AuthController
 
       $this->db->prepare('update users set password = ?, reset = ? where id = ?')->execute([$hash, 1, $user->id]);
 
-      $_SESSION['success'] = '新密碼已發送到你的郵箱';
-
+      flash('success', '新密碼已發送到你的郵箱');
       return $res->withRedirect('/login');
    }
 
-   public function getChangePassword($req, $res)
-   {
-      return $this->view->render($res, 'change-password.twig');
-   }
-
-   public function postChangePassword($req, $res)
+   public function changePassword($req, $res)
    {
       extract($req->getParams());
+      $id = $this->user()->id;
       $query = $this->db->prepare('select * from users where id = ?');
       $query->execute([$id]);
       $user = $query->fetch();
       if (password_verify($password, $user->password)) {
          $new = password_hash($new_password, PASSWORD_DEFAULT);
          $this->db->prepare('update users set password = ?, reset = ? where id = ?')->execute([$new, 0, $id]);
-         $_SESSION['success'] = '密碼更改成功';
+         flash('success', '密碼更改成功');
          return $res->withRedirect('/profile');
       }
 
-      $_SESSION['errors'] = ['message' => '舊密碼錯誤'];
+      flash('errors', ['message' => '舊密碼錯誤']);
 
       return $res->withRedirect('/changepassword');
    }
 
-   public function getUpdate($req, $res)
-   {
-      return $this->view->render($res, 'update.twig');
-   }
-
-   public function postUpdate($req, $res)
+   public function update($req, $res)
    {
       $inputs = $req->getParams();
+      $id = $this->user()->id;
       array_walk($inputs, function(&$v){
          $v = trim($v);
       });
@@ -211,9 +170,9 @@ class AuthController
 
       array_push($values, $id);
       $sql .= ' where id = ?';
-
       $this->db->prepare($sql)->execute($values);
-      $_SESSION['success'] = '資料更新成功';
+
+      flash('success', '資料更新成功');
       return $res->withRedirect('/update');
    }
 

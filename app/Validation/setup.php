@@ -16,7 +16,7 @@ $container['customErrors'] = function($c) {
 
 $container['forgetValidator'] = function($c) {
    $rules = [
-      'email' => v::notEmpty()->email()->setName('電郵'),
+      'email' => v::notEmpty()->email()->available($c['db'], 'users', 'email')->setName('電郵'),
    ];
 
    $customErrors = array_get($c['customErrors'], ['notEmpty', 'email']);
@@ -57,7 +57,7 @@ $container['changePasswordValidator'] = function($c) {
 
    $customErrors = array_get($c['customErrors'], ['notEmpty', 'noWhitespace', 'length', 'equals']);
 
-   return new App\Middleware\Validator($rules, $customErrors, 'changepassword', $c['auth']->user()->id);
+   return new App\Middleware\Validator($rules, $customErrors, 'changepassword');
 };
 
 $container['updateValidator'] = function($c) {
@@ -66,7 +66,7 @@ $container['updateValidator'] = function($c) {
       'website' => v::optional(v::website()->setName('個人網站'))
    ];
 
-   $customErrors = array_get($c['customErrors'], ['email']);
+   $customErrors = array_get($c['customErrors'], ['notEmpty', 'email']);
 
-   return new App\Middleware\Validator($rules, $customErrors, 'update', $c['auth']->user()->id);
+   return new App\Middleware\Validator($rules, $customErrors, 'update');
 };

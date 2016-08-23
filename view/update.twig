@@ -19,17 +19,17 @@
                      <label style="font-size: 110%; margin-bottom: 10px;" for="username">使用者名稱</label>
                      <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-user w-30"></i></span>
-                        <input class="form-control" type="text" id="username" value="{{ auth.user.name }}" disabled>
+                        <input class="form-control" type="text" id="username" value="{{ auth.user.username }}" disabled>
                      </div>
-                  </div>
+                  </div> <!-- end username -->
 
                   <div class="form-group">
                      <label style="font-size: 110%; margin-bottom: 10px;" for="nickname">別名</label>
                      <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-user w-30"></i></span>
+                        <span class="input-group-addon"><i class="fa fa-user-secret w-30"></i></span>
                         <input class="form-control" type="text" name="nickname" id="nickname" value="{{ auth.user.nickname }}">
                      </div>
-                  </div>
+                  </div><!-- end nickname -->
 
                   <div class="form-group">
                      <label style="font-size: 110%; margin-bottom: 10px;" for="website">個人網站</label>
@@ -46,7 +46,7 @@
                            <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ errors.website | first }}
                         </span>
                      {% endif %}
-                  </div>
+                  </div> <!-- end website -->
 
                   <div class="form-group">
                      <label style="font-size: 110%; margin-bottom: 10px;" for="come_from">來自</label>
@@ -55,7 +55,7 @@
                         <input class="form-control" type="text" name="come_from" id="come_from"
                                value="{{ errors.come_from ? old.come_from : auth.user.come_from }}">
                      </div>
-                  </div>
+                  </div> <!-- end come from -->
 
                   <div class="form-group">
                      <label style="font-size: 110%; margin-bottom: 10px;" for="email">電郵</label>
@@ -72,13 +72,13 @@
                            <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ errors.email | first }}
                         </span>
                      {% endif %}
-
-                  </div>
+                  </div> <!-- end email -->
 
                   <div class="form-group">
                      <label style="font-size: 110%; margin-bottom: 10px;" for="description">簡介</label>
-                     <textarea class="form-control" type="text" name="description" id="description" rows="5">{{ auth.user.description }}</textarea>
-                  </div>
+                     <textarea class="form-control" name="description" id="description" rows="5">{{ auth.user.description }}</textarea>
+                  </div> <!-- end desc -->
+
                   <div class="t-right">
                      <button class="btn btn-primary"><i class="fa fa-check mr-7"></i>確認</button>
                   </div>

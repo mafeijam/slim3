@@ -29,3 +29,7 @@ function addHttpPrefix(&$url) {
       $url = 'http://' . $url;
    }
 }
+
+function flash($key, $value) {
+   $_SESSION[$key] = $value;
+}

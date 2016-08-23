@@ -1,10 +1,10 @@
-<div class="panel panel-default">
+<div class="panel panel-info">
 
    <div class="panel-heading">會員資料</div>
    <div class="panel-body">
       <p style="text-align: center;">{{ gravatar(200) | raw }}</p>
       <hr>
-      <p>使用者：<span class="profile">{{ auth.user.name }}</span></p>
+      <p>使用者：<span class="profile">{{ auth.user.username }}</span></p>
       <p>註冊於：
          <span style="cursor: pointer;" class="profile" data-placement="right" data-toggle="tooltip" title="{{ auth.user.joined_at }}">
             {{ auth.user.joined_ago }}
@@ -16,12 +16,16 @@
          </span>
       </p>
       <hr>
-      <a class="btn btn-default plink" href="/changepassword">
-         <i class="fa fa-cog mr-7" aria-hidden="true"></i>更改密碼
-      </a>
-      <a class="btn btn-default plink" href="/update">
-         <i class="fa fa-pencil-square-o mr-7" aria-hidden="true"></i>編輯個人資料
-      </a>
+      <div style="display: flex; justify-content: center;">
+         <a class="btn btn-danger plink mr-7" href="/changepassword">
+            <i class="fa fa-cog mr-7" aria-hidden="true"></i>更改密碼
+         </a>
+         <a class="btn btn-success plink" href="/update">
+            <i class="fa fa-pencil-square-o mr-7" aria-hidden="true"></i>編輯個人資料
+         </a>
+      </div>
+
+
       {% if auth.user.active == false %}
          <hr>
          <div class="alert alert-warning" role="alert" style="text-align: center;">
@@ -33,7 +37,7 @@
          </div>
       {% endif %}
 
-   </div>
+   </div> <!-- end panel body -->
 </div>
 
 <script>

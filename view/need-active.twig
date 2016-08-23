@@ -1,0 +1,21 @@
+{% extends 'default.twig' %}
+
+{% block body %}
+   <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+         <div class="panel panel-warning" style="text-align: center;">
+
+            <div class="panel-heading" style="font-size: 150%;">電郵尚未驗證</div>
+
+            <div class="panel-body">
+               <p style="margin-bottom: 10px;">如要開啟分享功能，請進行電郵驗證</p>
+               <form action="/reactive" method="post">
+                  {{ csrf_field | raw }}
+                  <button class="btn btn-danger">按此重發驗證碼</button>
+               </form>
+            </div>
+
+         </div>
+      </div>
+   </div>
+{% endblock %}
