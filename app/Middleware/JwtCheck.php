@@ -27,9 +27,9 @@ class JwtCheck
          return $next($req, $res);
       }
 
-      $token = $_COOKIE['token'];
+      $token = isset($_COOKIE['token']) ? $_COOKIE['token'] : null;
 
-      if (!isset($token)) {
+      if (is_null($token)) {
          return $this->resp($req, $res, 'Unauthorized request.');
       }
 

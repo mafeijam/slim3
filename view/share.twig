@@ -2,7 +2,7 @@
 
 {% block body %}
 <div class="row">
-   <div class="col-md-6">
+   <div id="content" class="col-md-12">
       <form action="/share" method="post">
          <div class="panel panel-info">
             <div class="panel-heading" style="font-size: 150%; text-align: center;">開心 Share</div>
@@ -28,25 +28,40 @@
                   <label style="font-size: 110%; margin-bottom: 10px;" for="body">
                      內容 <small style="color: #828282; font-style: italic; font-size: 70%;">支援 Markdown</small>
                   </label>
-                  <textarea class="form-control" name="body" id="body" rows="23"></textarea>
+                  <textarea id="marked" class="form-control" name="body" id="body" rows="23"></textarea>
                </div>
 
                <div class="t-right">
+                  <div id="show" class="btn btn-success"><i class="fa fa-eye mr-7"></i>預覽</div>
                   <button class="btn btn-primary"><i class="fa fa-check mr-7"></i>發表</button>
                </div>
-
             </div>
          </div>
       </form>
    </div>
 
-   <div class="col-md-6">
-      <div class="panel panel-default">
+   <div id="preview" class="col-md-6 hide">
+      <div class="panel panel-default" style="height: 797px;">
          <div class="panel-heading" style="font-size: 150%; text-align: center;">內容預覽</div>
          <div class="panel-body">
-            <textarea class="form-control" rows="35" disabled></textarea>
+            <div id="marked-preview"></div>
          </div>
       </div>
    </div>
 </div>
+
+<script src="/js/marked.min.js"></script>
+<script>
+
+$('#marked').keyup(function(){
+   var m = marked($('#marked').val());
+   $('#marked-preview').html(m)
+})
+
+$('#show').click(function(){
+   $('#content').toggleClass('col-md-6')
+   $('#preview').toggleClass('hide')
+})
+
+</script>
 {% endblock %}

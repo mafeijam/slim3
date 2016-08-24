@@ -1,5 +1,11 @@
 @import url(http://fonts.googleapis.com/earlyaccess/notosanstc.css);
 
+@media (min-width: 1200px) {
+  .container {
+    width: 1350px;
+  }
+}
+
 body {
    padding-top: 70px;
    font-family: 'Noto Sans TC';
@@ -9,10 +15,6 @@ body {
 
 #main {
   min-height: calc(100vh - 130px)
-}
-
-.container {
-  max-width: 1300px;
 }
 
 footer {
@@ -68,6 +70,10 @@ textarea.form-control:disabled {
 
 .disappear {
   cursor: pointer;
+}
+
+.hide {
+  display: none;
 }
 
 #gravatar-link {
