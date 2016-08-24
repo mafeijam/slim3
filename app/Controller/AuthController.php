@@ -193,6 +193,14 @@ class AuthController
       return $res->withRedirect('/update');
    }
 
+   public function share($req, $res)
+   {
+      extract($req->getParams());
+      $this->db->prepare('insert into shares set user_id = ?, cat_id = ?, title = ?, body = ?')
+            ->execute([$this->user()->id, $category, $title, $body]);
+      return $res->withRedirect('/');
+   }
+
    protected function user()
    {
       return $this->auth->user();

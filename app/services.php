@@ -1,5 +1,8 @@
 <?php
 
+use Aptoma\Twig\Extension\MarkdownEngine;
+use Aptoma\Twig\Extension\MarkdownExtension;
+
 $container['db'] = function($c) {
    extract($c->get('database'));
    $pdo = new PDO('mysql:host='.$host.';dbname='.$dbname, $username, $password);
@@ -11,6 +14,9 @@ $container['db'] = function($c) {
 
 $container['view'] = function($c) {
    $view = new Slim\Views\Twig(__DIR__ . '/../view');
+   $engine = new MarkdownEngine\MichelfMarkdownEngine();
+
+   $view->addExtension(new MarkdownExtension($engine));
 
    $view->addExtension(new Slim\Views\TwigExtension(
        $c['router'],

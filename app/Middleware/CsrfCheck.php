@@ -23,7 +23,7 @@ class CsrfCheck
 
       return $this->check($req->getParam($this->key)) ?
          $next($this->withToken($req), $res) :
-         $res->withRedirect('/');
+         $this->abort($res);
    }
 
    protected function check($token)
@@ -44,5 +44,11 @@ class CsrfCheck
       }
 
       return $req->withAttribute($this->key, $_SESSION[$this->key]);
+   }
+
+   protected function abort($res)
+   {
+      flash('errors', ['message' => '操作失敗']);
+      return $res->withRedirect('/');
    }
 }

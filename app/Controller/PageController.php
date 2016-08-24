@@ -18,7 +18,8 @@ class PageController
 
    public function index($req, $res)
    {
-      return $this->view->render($res, 'home.twig');
+      $shares = $this->db->query('select * from shares order by created_at desc')->fetchAll();
+      return $this->view->render($res, 'home.twig', compact('shares'));
    }
 
    public function profile($req, $res)

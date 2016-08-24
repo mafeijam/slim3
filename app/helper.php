@@ -25,7 +25,7 @@ function random_str($len) {
 }
 
 function addHttpPrefix(&$url) {
-   if ($url !== '' && preg_match('#^https?://#i', $url) == false) {
+   if ($url !== null && preg_match('#^https?://#i', $url) == false) {
       $url = 'http://' . $url;
    }
 }

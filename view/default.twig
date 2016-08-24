@@ -10,9 +10,12 @@
       <link rel="stylesheet" href="/css/nprogress.css">
       <link rel="stylesheet" href="/fontawesome/css/font-awesome.min.css">
       <link rel="stylesheet" href="/css/animate.css">
+      <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/styles/tomorrow-night-eighties.min.css">
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/highlight.min.js"></script>
       <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
       <script src="https://cdn.rawgit.com/leafo/sticky-kit/v1.1.2/jquery.sticky-kit.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script>
    </head>
    <body>
       <div id="main">
@@ -22,13 +25,13 @@
             <div style="display: flex; justify-content: center;">
                <div style="position: fixed; width: 300px; z-index: 999999; top: 10px;" class="animated slideInDown">
                   {% if success %}
-                     <div class="alert alert-success disappear" style="text-align: center;" role="alert">
+                     <div class="alert alert-success auto-disappear" style="text-align: center;" role="alert">
                         <i class="fa fa-check" aria-hidden="true"></i> {{ success }}
                      </div>
                   {% endif %}
 
                   {% if errors.message %}
-                     <div class="alert alert-danger disappear" style="text-align: center;" role="alert">
+                     <div class="alert alert-danger auto-disappear" style="text-align: center;" role="alert">
                         <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ errors.message }}
                      </div>
                   {% endif %}
@@ -57,10 +60,10 @@
       {% endif %}
 
       <script>
-         $('.disappear').delay(3500).fadeOut(1000)
+         $('.auto-disappear').delay(3500).fadeOut(1000)
 
-         $('body').on('click', '.disappear', function(){
-            $('.disappear').stop()
+         $('body').on('click', '.auto-disappear', function(){
+            $('.auto-disappear').stop()
          })
 
          $('body').on('click', 'button', function(){

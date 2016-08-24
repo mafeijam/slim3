@@ -75,11 +75,23 @@ $container['resetPasswordValidator'] = function($c) {
 
 $container['updateValidator'] = function($c) {
    $rules = [
-      'email' => v::notEmpty()->email()->unique($c['db'], 'users', 'email', $c['auth']->user()->id)->setName('電郵'),
+      'email'   => v::notEmpty()->email()->unique($c['db'], 'users', 'email', $c['auth']->user()->id)->setName('電郵'),
       'website' => v::optional(v::website()->setName('個人網站'))
    ];
 
    $customErrors = array_get($c['customErrors'], ['notEmpty', 'email']);
 
    return new App\Middleware\Validator($rules, $customErrors, 'update');
+};
+
+$container['shareValidator'] = function($c) {
+   $rules = [
+      'category' => v::notEmpty()->setName('分類'),
+      'title'    => v::notEmpty()->setName('標題'),
+      'body'     => v::notEmpty()->setName('內容')
+   ];
+
+   $customErrors = array_get($c['customErrors'], ['notEmpty']);
+
+   return new App\Middleware\Validator($rules, $customErrors, 'share');
 };

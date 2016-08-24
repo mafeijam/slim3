@@ -3,7 +3,8 @@
 {% block body %}
 <div class="row">
    <div id="content" class="col-md-12">
-      <form action="/share" method="post">
+      <form action="/share" method="post" autocomplete="off">
+         {{ csrf_field | raw }}
          <div class="panel panel-info">
             <div class="panel-heading" style="font-size: 150%; text-align: center;">開心 Share</div>
 
@@ -11,11 +12,11 @@
 
                <div class="form-group">
                   <label style="font-size: 110%; margin-bottom: 10px;">分類</label>
-                  <select class="form-control">
-                  <option>-- 選擇分類 --</option>
-                  <option>網站</option>
-                  <option>影片</option>
-                  <option>遊戲</option>
+                  <select name="category" class="form-control">
+                     <option>-- 選擇分類 --</option>
+                     <option value="1">網站</option>
+                     <option value="2">影片</option>
+                     <option value="3">遊戲</option>
                   </select>
                </div>
 
@@ -26,14 +27,19 @@
 
                <div class="form-group">
                   <label style="font-size: 110%; margin-bottom: 10px;" for="body">
-                     內容 <small style="color: #828282; font-style: italic; font-size: 70%;">支援 Markdown</small>
+                     內容
+                     <small style="color: #828282; font-style: italic; font-size: 70%;">支援 Markdown</small>
+                     <a data-placement="top" data-toggle="tooltip" title="語法說明" target="_blank"
+                        style="margin-left: 5px; color: #828282" href="http://markdown.tw/">
+                        <i class="fa fa-question-circle"></i>
+                     </a>
                   </label>
                   <textarea id="marked" class="form-control" name="body" id="body" rows="23"></textarea>
                </div>
 
                <div class="t-right">
                   <div id="show" class="btn btn-success"><i class="fa fa-eye mr-7"></i>預覽</div>
-                  <button class="btn btn-primary"><i class="fa fa-check mr-7"></i>發表</button>
+                  <button type="submit" class="btn btn-primary"><i class="fa fa-check mr-7"></i>發表</button>
                </div>
             </div>
          </div>
@@ -56,6 +62,9 @@
 $('#marked').keyup(function(){
    var m = marked($('#marked').val());
    $('#marked-preview').html(m)
+  $('pre code').each(function(i, block) {
+    hljs.highlightBlock(block);
+  })
 })
 
 $('#show').click(function(){
@@ -63,5 +72,30 @@ $('#show').click(function(){
    $('#preview').toggleClass('hide')
 })
 
+$('[data-toggle="tooltip"]').tooltip()
+
+$(document).ready(function() {
+  $('pre').each(function(i, block) {
+    hljs.highlightBlock(block)
+  })
+})
+
+$('textarea').on('keydown', function (e) {
+   var keyCode = e.keyCode || e.which
+
+   if (keyCode === 9) {
+      e.preventDefault()
+      var start = this.selectionStart
+      var end = this.selectionEnd
+      var val = this.value
+      var selected = val.substring(start, end)
+      var re = /^/gm
+      var count = selected.match(re).length
+
+      this.value = val.substring(0, start) + selected.replace(re, '\t') + val.substring(end)
+      this.selectionStart = start
+      this.selectionEnd = end + count
+   }
+})
 </script>
 {% endblock %}

@@ -27,6 +27,7 @@ $app->group('', function(){
    $this->post('/reactive', 'AuthController:reactive');
 
    $this->get('/share', 'PageController:share')->add('permission');
+   $this->post('/share', 'AuthController:share')->add('shareValidator');
 })->add('guard');
 
 

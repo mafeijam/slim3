@@ -44,6 +44,12 @@ textarea.form-control:disabled {
   cursor: auto;
 }
 
+pre {
+  background-color: #2D2D2D;
+  border-color: #2D2D2D;
+  max-height: 500px;
+}
+
 .gravatar {
    border-radius: 10%;
    margin: 0 10px 0 0;
@@ -80,10 +86,30 @@ textarea.form-control:disabled {
    padding: 12px 10px 10px 10px;
 }
 
+#marked-preview {
+  overflow: auto;
+  max-height: 720px;
+  padding: 5px;
+}
+
 #footer-box {
    display: flex;
    align-items: center;
    height: 100%;
    width: 100%;
    justify-content: space-between;
+}
+
+::-webkit-scrollbar-track {
+   background-color: #FCFAF2;
+}
+
+::-webkit-scrollbar {
+   width: 6px;
+   height: 10px;
+   background-color: #FCFAF2;
+}
+
+::-webkit-scrollbar-thumb {
+   background-color: #C73E3A;
 }
