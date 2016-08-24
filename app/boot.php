@@ -28,7 +28,6 @@ require 'services.php';
 $app->add(new TwigGlobalVar($container['view'], $container['auth']));
 $app->add(new CsrfCheck(['/api/*']));
 $app->add(new PjaxHeader);
-$app->add(new MustChangePasswordAfterReset($container['auth']));
 
 $app->group('/api', function() use ($app){
    require '../routes/api.php';

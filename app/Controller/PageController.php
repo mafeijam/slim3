@@ -60,4 +60,19 @@ class PageController
    {
       return $this->view->render($res, 'need-active.twig');
    }
+
+   public function reset($req, $res, $args)
+   {
+      $token = $args['token'];
+      $query = $this->db->prepare('select reset_token, reset_exp from users where reset_token = ?');
+      $query->execute([$token]);
+      $exp = strtotime($query->fetch()->reset_exp);
+
+      if ($query->rowCount() && $exp > time()) {
+         return $this->view->render($res, 'reset-password.twig', ['reset_token' => $token]);
+      }
+
+      flash('errors', ['message' => '重設密碼連結已失效']);
+      return $res->withRedirect('/');
+   }
 }

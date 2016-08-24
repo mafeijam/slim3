@@ -40,7 +40,7 @@ class CsrfCheck
    protected function withToken($req)
    {
       if (!isset($_SESSION[$this->key])) {
-         $_SESSION[$this->key] = sha1(time());
+         $_SESSION[$this->key] = random_str(32);
       }
 
       return $req->withAttribute($this->key, $_SESSION[$this->key]);

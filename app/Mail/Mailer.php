@@ -3,14 +3,17 @@
 namespace App\Mail;
 
 use PHPMailer;
+use Twig_Environment;
 
 class Mailer
 {
    protected $mailer;
+   protected $twig;
 
-   public function __construct(PHPMailer $mailer)
+   public function __construct(PHPMailer $mailer, Twig_Environment $twig)
    {
       $this->mailer = $mailer;
+      $this->twig = $twig;
    }
 
    public function to($address, $name)
@@ -21,13 +24,7 @@ class Mailer
 
    public function send($body, array $data = [])
    {
-      $mailer = $this->mailer;
-      extract($data);
-      ob_start();
-      require __DIR__ . "/../../view/email/$body.php";
-      $mailer->Body = ob_get_clean();
-      if ($mailer->send() == false) {
-         trigger_error('電郵未能發送');
-      }
+      $this->mailer->Body = $this->twig->render($body.'.twig', $data);
+      return $this->mailer->send();
    }
 }

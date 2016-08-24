@@ -12,6 +12,8 @@ $app->group('', function(){
    $this->post('/register', 'AuthController:register')->add('registerValidator');
    $this->get('/forget', 'PageController:forget');
    $this->post('/forget', 'AuthController:forget')->add('forgetValidator');
+   $this->get('/reset/{token}', 'PageController:reset');
+   $this->post('/reset', 'AuthController:reset')->add('resetPasswordValidator');
 })->add('guest');
 
 

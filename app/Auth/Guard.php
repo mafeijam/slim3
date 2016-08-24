@@ -52,11 +52,6 @@ class Guard
       return null;
    }
 
-   public function passwordReset()
-   {
-      return $this->check() && $this->userProfile->reset == 1;
-   }
-
    protected function diffForHumans($time)
    {
       return Carbon::createFromTimestamp(strtotime($time))->diffForHumans();

@@ -1,0 +1,8 @@
+{% extends 'email.twig' %}
+
+{% block body %}
+   <div class="container">
+      <h1>重設密碼</h1>
+      <a class="btn" href="http://slim3.dev/reset/{{ token }}">按此重設密碼</a>
+   </div>
+{% endblock %}

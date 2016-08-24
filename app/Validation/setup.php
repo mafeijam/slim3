@@ -60,6 +60,19 @@ $container['changePasswordValidator'] = function($c) {
    return new App\Middleware\Validator($rules, $customErrors, 'changepassword');
 };
 
+$container['resetPasswordValidator'] = function($c) {
+   $rules = [
+      'password'     => v::notEmpty()->noWhitespace()->length(6, 255)->setName('新密碼'),
+      'password_cfm' => v::equals($c['request']->getParam('password')),
+   ];
+
+   $customErrors = array_get($c['customErrors'], ['notEmpty', 'noWhitespace', 'length', 'equals']);
+
+   $token = $c['request']->getParam('reset_token');
+
+   return new App\Middleware\Validator($rules, $customErrors, 'reset/'.$token);
+};
+
 $container['updateValidator'] = function($c) {
    $rules = [
       'email' => v::notEmpty()->email()->unique($c['db'], 'users', 'email', $c['auth']->user()->id)->setName('電郵'),

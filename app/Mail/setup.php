@@ -15,6 +15,11 @@ $container['phpMailer'] = function($c) {
    return $mailer;
 };
 
+$container['twigMail'] = function($c) {
+   $loader = new Twig_Loader_Filesystem(__DIR__ . '/../../view/email');
+   return new Twig_Environment($loader);
+};
+
 $container['mailer'] = function($c) {
-   return new App\Mail\Mailer($c['phpMailer']);
+   return new App\Mail\Mailer($c['phpMailer'], $c['twigMail']);
 };

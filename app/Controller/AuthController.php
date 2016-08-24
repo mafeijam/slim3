@@ -69,13 +69,14 @@ class AuthController
    {
       extract($req->getParams());
       $password = password_hash($password, PASSWORD_DEFAULT);
-      $code = random_str(32);
+      $code = random_str(60);
 
       $this->db->prepare('insert into users set username = ?, password = ?, email = ?, active_code = ?')
            ->execute([$username, $password, $email, $code]);
 
-      flash('success', '註冊成功，請到你的郵箱查收驗證郵件');
       $this->mailer->to($email, $username)->send('welcome', ['code' => $code]);
+
+      flash('success', '註冊成功，請到你的郵箱查收驗證郵件');
 
       return $res->withRedirect('/login');
    }
@@ -100,7 +101,7 @@ class AuthController
 
    public function reactive($req, $res)
    {
-      $code = random_str(32);
+      $code = random_str(60);
       $this->db->prepare('update users set active_code = ? where id = ?')
            ->execute([$code, $this->user()->id]);
       $this->mailer->to($this->user()->email, $this->user()->username)->send('welcome', ['code' => $code]);
@@ -113,16 +114,32 @@ class AuthController
       $email = $req->getParam('email');
       $query = $this->db->prepare('select * from users where email = ?');
       $query->execute([$email]);
-      $newPassword = random_str(8);
-      $hash = password_hash($newPassword, PASSWORD_DEFAULT);
       $user = $query->fetch();
+      $token = random_str(60);
 
-      $this->mailer->to($email, $user->username)->send('reset', ['password' => $newPassword]);
+      $this->mailer->to($email, $user->username)->send('reset', ['token' => $token]);
 
-      $this->db->prepare('update users set password = ?, reset = ? where id = ?')->execute([$hash, 1, $user->id]);
+      $this->db->prepare('update users set reset_token = ?, reset_exp = DATE_ADD(NOW(), INTERVAL 1 HOUR) where id = ?')
+           ->execute([$token, $user->id]);
 
-      flash('success', '新密碼已發送到你的郵箱');
-      return $res->withRedirect('/login');
+      flash('success', '重設密碼連結已發送');
+      return $res->withRedirect('/forget');
+   }
+
+   public function reset($req, $res)
+   {
+      extract($req->getParams());
+      $query = $this->db->prepare('select id from users where reset_token = ?');
+      $query->execute([$reset_token]);
+
+      if ($user = $query->fetch()) {
+         $password = password_hash($password, PASSWORD_DEFAULT);
+         $this->db->prepare('update users set password = ?, reset_token = null, reset_exp = null where id = ?')
+              ->execute([$password, $user->id]);
+
+         flash('success', '密碼更改成功');
+         return $res->withRedirect('/login');
+      }
    }
 
    public function changePassword($req, $res)
@@ -149,7 +166,7 @@ class AuthController
       $inputs = $req->getParams();
       $id = $this->user()->id;
       array_walk($inputs, function(&$v){
-         $v = trim($v);
+         $v = trim($v) ? trim($v) : null;
       });
       extract($inputs);
       addHttpPrefix($website);
