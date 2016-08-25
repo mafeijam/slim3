@@ -6,6 +6,7 @@ use PDO;
 use App\Mail\Mailer;
 use App\Auth\Guard;
 use Firebase\JWT\JWT;
+use Slim\Views\Twig;
 
 class AuthController
 {
@@ -13,13 +14,15 @@ class AuthController
    protected $jwt;
    protected $mailer;
    protected $auth;
+   protected $view;
 
-   public function __construct(PDO $db, Mailer $mailer, Guard $auth, $jwt)
+   public function __construct(PDO $db, Mailer $mailer, Guard $auth, Twig $view, $jwt)
    {
       $this->db = $db;
       $this->jwt = $jwt;
       $this->mailer = $mailer;
       $this->auth = $auth;
+      $this->view = $view;
    }
 
    public function login($req, $res)
@@ -27,7 +30,7 @@ class AuthController
       extract($this->jwt);
 
       extract($req->getParams());
-      $query = $this->db->prepare('select * from users where username = ?');
+      $query = $this->db->prepare('select id, username, password from users where username = ?');
       $query->execute([$username]);
       $user = $query->fetch();
       $time = time() + $exp;
@@ -77,13 +80,14 @@ class AuthController
       $this->mailer->to($email, $username)->send('welcome', ['code' => $code]);
 
       flash('success', '註冊成功，請到你的郵箱查收驗證郵件');
+      flash('old', ['username' => $username]);
 
       return $res->withRedirect('/login');
    }
 
    public function active($req, $res, $args)
    {
-      $query = $this->db->prepare('select * from users where active_code = ?');
+      $query = $this->db->prepare('select id, username from users where active_code = ?');
       $query->execute([$args['code']]);
 
       if ($user = $query->fetch()) {
@@ -95,8 +99,7 @@ class AuthController
          return $res->withRedirect($to);
       }
 
-      flash('errors', ['message' => '驗證碼錯誤']);
-      return $res->withRedirect('/');
+      return $this->view->render($res, 'active-error.twig');
    }
 
    public function reactive($req, $res)
@@ -151,7 +154,7 @@ class AuthController
       $user = $query->fetch();
       if (password_verify($password, $user->password)) {
          $new = password_hash($new_password, PASSWORD_DEFAULT);
-         $this->db->prepare('update users set password = ?, reset = ? where id = ?')->execute([$new, 0, $id]);
+         $this->db->prepare('update users set password = ? where id = ?')->execute([$new, $id]);
          flash('success', '密碼更改成功');
          return $res->withRedirect('/profile');
       }
@@ -176,7 +179,7 @@ class AuthController
       $values = [$nickname, $website, $come_from, $email, $description];
 
       if ($this->user()->email !== $email) {
-         $code = random_str(32);
+         $code = random_str(60);
          $sql .= ', active = ?, active_code = ? where id = ?';
          array_push($values, 0, $code, $id);
          $this->db->prepare($sql)->execute($values);
@@ -199,6 +202,20 @@ class AuthController
       $this->db->prepare('insert into shares set user_id = ?, cat_id = ?, title = ?, body = ?')
             ->execute([$this->user()->id, $category, $title, $body]);
       return $res->withRedirect('/');
+   }
+
+   public function profile($req, $res)
+   {
+      $query = $this->db->prepare('select shares.*,
+                                   categories.name as cat_name
+                                   from shares
+                                   inner join categories
+                                   on categories.id = shares.cat_id
+                                   where user_id = ?
+                                   order by created_at desc limit 3');
+      $query->execute([$this->user()->id]);
+
+      return $this->view->render($res, 'profile.twig', ['recents' => $query->fetchAll()]);
    }
 
    protected function user()

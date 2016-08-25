@@ -10,14 +10,14 @@
             {{ auth.user.joined_ago }}
          </span>
       </p>
-      <p>最後登入於：
+      <p>上一次登入：
          <span style="cursor: pointer;" class="profile" data-placement="right" data-toggle="tooltip" title="{{ auth.user.last_login }}">
             {{ auth.user.last_ago }}
          </span>
       </p>
       <hr>
       <div style="display: flex; justify-content: center;">
-         <a class="btn btn-danger plink mr-7" href="/changepassword">
+         <a class="btn btn-warning plink mr-7" href="/changepassword">
             <i class="fa fa-cog mr-7" aria-hidden="true"></i>更改密碼
          </a>
          <a class="btn btn-success plink" href="/update">

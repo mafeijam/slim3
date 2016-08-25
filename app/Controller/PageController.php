@@ -18,13 +18,47 @@ class PageController
 
    public function index($req, $res)
    {
-      $shares = $this->db->query('select * from shares order by created_at desc')->fetchAll();
-      return $this->view->render($res, 'home.twig', compact('shares'));
+      $shares = $this->db->query('select shares.*,
+                                  users.username, users.email,
+                                  categories.name as cat_name
+                                  from shares
+                                  inner join users
+                                  on users.id = shares.user_id
+                                  inner join categories
+                                  on categories.id = shares.cat_id
+                                  order by shares.created_at desc')
+                          ->fetchAll();
+
+      $hots = $this->db->query('select * from shares order by views desc limit 1')->fetchAll();
+
+      return $this->view->render($res, 'home.twig', compact('shares', 'hots'));
    }
 
-   public function profile($req, $res)
+   public function shareShow($req, $res, $args)
    {
-      return $this->view->render($res, 'profile.twig');
+      $id = $args['id'];
+
+      $this->db->prepare('update shares set views = views + 1 where id = ?')->execute([$id]);
+
+      $query = $this->db->prepare('select shares.*,
+                                   users.id as uid, users.username, users.email, users.description,
+                                   categories.name as cat_name
+                                   from shares
+                                   inner join users
+                                   on users.id = shares.user_id
+                                   inner join categories
+                                   on categories.id = shares.cat_id
+                                   where shares.id = ?');
+
+      $query->execute([$id]);
+      $share = $query->fetch();
+
+      $query = $this->db->prepare('select * from shares where user_id = ? and id != ? order by created_at desc limit 3');
+      $query->execute([$share->uid, $share->id]);
+
+      $others = $query->fetchAll();
+
+      return $this->view->render($res, 'share-show.twig', compact('share', 'others'));
    }
 
    public function login($req, $res)
@@ -54,12 +88,9 @@ class PageController
 
    public function share($req, $res)
    {
-      return $this->view->render($res, 'share.twig');
-   }
+      $categories = $this->db->query('select * from categories')->fetchAll();
 
-   public function needActive($req, $res)
-   {
-      return $this->view->render($res, 'need-active.twig');
+      return $this->view->render($res, 'share.twig', compact('categories'));
    }
 
    public function reset($req, $res, $args)
@@ -67,13 +98,11 @@ class PageController
       $token = $args['token'];
       $query = $this->db->prepare('select reset_token, reset_exp from users where reset_token = ?');
       $query->execute([$token]);
-      $exp = strtotime($query->fetch()->reset_exp);
 
-      if ($query->rowCount() && $exp > time()) {
+      if ($query->rowCount() && strtotime($query->fetch()->reset_exp) > time()) {
          return $this->view->render($res, 'reset-password.twig', ['reset_token' => $token]);
       }
 
-      flash('errors', ['message' => '重設密碼連結已失效']);
-      return $res->withRedirect('/');
+      return $this->view->render($res, 'reset-error.twig');
    }
 }

@@ -1,0 +1,54 @@
+{% extends 'default.twig' %}
+
+{% block body %}
+   <div class="row">
+      <div class="col-md-9">
+         <div class="panel panel-default">
+            <div class="panel-heading" style="padding-bottom: 20px;">
+               <div style="font-size: 200%; padding-bottom: 10px;">{{ share.title }}</div class="share-title">
+               <small><em>分類：</em> <span class="grey">{{ share.cat_name }}</span></small>
+               <small><em>發表於：</em> <span class="grey">{{ share.created_at | diffForHumans }}</span></small>
+               <small><em>點閱：</em> <span class="grey">{{ share.views }}</span></small>
+            </div>
+
+            <div class="panel-body">
+               {{ share.body | markdown }}
+            </div>
+         </div>
+      </div>
+
+      <div class="col-md-3">
+         <div class="panel panel-info">
+            <div class="panel-heading">作者：<span class="grey">{{ share.username }}</span></div>
+            <div class="panel-body" style="text-align: center;">
+               {{ gravatar(120, share.email) | raw }}
+
+               {% if share.description %}
+                  <div style="padding-top: 10px;">{{ share.description }}</div >
+               {% endif %}
+
+            </div>
+         </div>
+      </div>
+
+      <div class="col-md-3">
+         <div class="panel panel-success">
+            <div class="panel-heading" style="text-align: center">作者的其他分享</div>
+            <div class="panel-body">
+               {% for other in others %}
+                  <a style="font-size: 120%; display: block; padding-bottom: 5px;" class="share-title plink" href="/share/{{ other.id }}">
+                     <i class="fa fa-caret-right mr-7" aria-hidden="true"></i>{{ other.title }}
+                  </a>
+               {% endfor %}
+            </div>
+         </div>
+      </div>
+
+   </div>
+
+   <script>
+      $('pre code').each(function(i, block) {
+         hljs.highlightBlock(block)
+      })
+   </script>
+{% endblock %}

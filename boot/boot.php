@@ -3,11 +3,14 @@
 session_start();
 
 require '../vendor/autoload.php';
-require '../app/helper.php';
+require 'helper.php';
 
 use Slim\App;
 use Dotenv\Dotenv;
 use Carbon\Carbon;
+use Whoops\Run as Whoops;
+use Whoops\Handler\PrettyPageHandler;
+
 use App\Middleware\JwtCheck;
 use App\Middleware\CsrfCheck;
 use App\Middleware\PjaxHeader;
@@ -22,6 +25,15 @@ $config = require 'config.php';
 $app = new App($config);
 
 $container = $app->getContainer();
+
+if ($config['debug']) {
+   unset($container['errorHandler']);
+   unset($container['phpErrorHandler']);
+
+   $whoops = new Whoops;
+   $whoops->pushHandler(new PrettyPageHandler);
+   $whoops->register();
+}
 
 require 'services.php';
 

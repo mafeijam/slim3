@@ -3,7 +3,7 @@
 $app->get('/', 'PageController:index');
 
 $app->get('/active/{code}', 'AuthController:active');
-$app->get('/need-active', 'PageController:needActive')->add('notActiveOnly');
+$app->get('/share/{id}', 'PageController:shareShow');
 
 $app->group('', function(){
    $this->get('/login', 'PageController:login');
@@ -19,7 +19,7 @@ $app->group('', function(){
 
 $app->group('', function(){
    $this->get('/logout', 'AuthController:logout');
-   $this->get('/profile', 'PageController:profile');
+   $this->get('/profile', 'AuthController:profile');
    $this->get('/changepassword', 'PageController:changePassword');
    $this->post('/changepassword', 'AuthController:changePassword')->add('changePasswordValidator');
    $this->get('/update','PageController:update');

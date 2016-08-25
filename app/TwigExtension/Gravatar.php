@@ -25,10 +25,10 @@ class Gravatar extends \Twig_Extension
       ];
    }
 
-   public function gravatar($size = 100, $default = 'mm')
+   public function gravatar($size = 100, $email = null, $default = 'mm')
    {
       $url = 'https://www.gravatar.com/avatar/';
-      $url .= md5($this->email);
+      $url .= $email ? md5($email) : md5($this->email);
       $url .= '?s='.$size.'&d='.$default;
       return '<img class="gravatar" src="' . $url . '">';
    }

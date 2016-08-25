@@ -50,6 +50,10 @@ pre {
   max-height: 500px;
 }
 
+code {
+  padding: 6px 10px;
+}
+
 .gravatar {
    border-radius: 10%;
    margin: 0 10px 0 0;
@@ -74,12 +78,28 @@ pre {
    font-weight: 700;
 }
 
-.disappear {
+.auto-disappear {
   cursor: pointer;
 }
 
 .hide {
   display: none;
+}
+
+.share-title {
+  font-weight: 700;
+  color: #828282;
+  transition: .5s;
+}
+
+.share-title:hover, .share-title:active {
+  color: #1C1C1C;
+  text-decoration: none;
+}
+
+.grey {
+  color: #828282;
+  margin-right: 10px;
 }
 
 #gravatar-link {
@@ -98,6 +118,14 @@ pre {
    height: 100%;
    width: 100%;
    justify-content: space-between;
+}
+
+#github {
+   color: #828282;
+}
+
+#github:hover {
+   color: #1C1C1C;
 }
 
 ::-webkit-scrollbar-track {

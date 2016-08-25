@@ -7,9 +7,13 @@
             <div class="panel-heading">分類</div>
             <div class="panel-body">
                {% for share in shares %}
-                  <h2>{{ share.title }}</h2>
-                  <p>{{ share.body | markdown  }}</p>
-                  <hr>
+                  <div style="float: left">{{ gravatar(50, share.email) | raw }}</div>
+                  <a style="font-size: 150%; display: block;" class="share-title plink" href="/share/{{ share.id }}">{{ share.title }}</a>
+                  <small><em>作者：</em> <span class="grey">{{ share.username }}</span></small>
+                  <small><em>分類：</em> <span class="grey">{{ share.cat_name }}</span></small>
+                  <small><em>發表於：</em> <span class="grey">{{ share.created_at | diffForHumans }}</span></small>
+                  <small><em>點閱：</em> <span class="grey">{{ share.views }}</span></small>
+                  {{ loop.last ? '' : '<hr>' }}
                {% endfor %}
             </div>
          </div>
@@ -29,31 +33,25 @@
             </div>
          </div>
 
-         <div class="panel panel-danger" style="text-align: center">
-            <div class="panel-heading">熱門分享</div>
+         <div class="panel panel-danger">
+            <div class="panel-heading" style="text-align: center">熱門分享</div>
             <div class="panel-body">
-               Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-               tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-               quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-               consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-               cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-               proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+               {% for hot in hots %}
+                  <a style="font-size: 120%;" class="share-title plink" href="/share/{{ hot.id }}">
+                     {{ hot.title }}
+                  </a>
+               {% endfor %}
             </div>
          </div>
 
          <div class="panel panel-warning" style="text-align: center">
             <div class="panel-heading">好站連結</div>
             <div class="panel-body">
-               Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-               tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-               quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-               consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-               cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-               proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+               <p>股票@ <a href="http://quotes.jamwong.me" target="_blank">quotes.jamwong.me</a></p>
+               <p>BLOG@ <a href="http://blog.jamwong.me" target="_blank">blog.jamwong.me</a></p>
             </div>
          </div>
 
       </div>
    </div>
-
 {% endblock %}

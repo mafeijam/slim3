@@ -16,7 +16,7 @@ $container['phpMailer'] = function($c) {
 };
 
 $container['twigMail'] = function($c) {
-   $loader = new Twig_Loader_Filesystem(__DIR__ . '/../../view/email');
+   $loader = new Twig_Loader_Filesystem(__DIR__ . '/../view/email');
    return new Twig_Environment($loader);
 };
 

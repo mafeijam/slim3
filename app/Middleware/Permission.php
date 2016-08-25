@@ -2,21 +2,28 @@
 
 namespace App\Middleware;
 
+use Slim\Views\Twig;
+
 class Permission
 {
-   protected $auth;
+   protected $view;
+   protected $permission;
 
-   public function __construct(\App\Auth\Guard $auth)
+   public function __construct(Twig $view, $permission)
    {
-      $this->auth = $auth;
+      $this->view = $view;
+      $this->permission = $permission;
    }
 
    public function __invoke($req, $res, $next)
    {
-      if ($this->auth->user()->active == 0) {
-         return $res->withRedirect('/need-active');
-      }
+      return $this->canShare() ?
+         $next($req, $res) :
+         $this->view->render($res, 'need-active.twig');
+   }
 
-      return $next($req, $res);
+   protected function canShare()
+   {
+      return $this->permission == 1;
    }
 }

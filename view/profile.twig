@@ -10,13 +10,18 @@
       <div class="col-md-8">
          <div class="panel panel-default">
             <div class="panel-heading">最近發表</div>
-            <div class="panel-body">
-               Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-               tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-               quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-               consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-               cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-               proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            <div class="panel-body" style="padding-left: 30px;">
+               {% if recents %}
+                  {% for share in recents %}
+                      <a style="font-size: 120%;" class="share-title plink" href="/share/{{ share.id }}">{{ share.title }}</a> -
+                        <small><em>分類：</em> <span class="grey">{{ share.cat_name }}</span></small>
+                        <small><em>發表於：</em> <span class="grey">{{ share.created_at | diffForHumans }}</span></small>
+                        <small><em>點閱：</em> <span class="grey">{{ share.views }}</span></small>
+                      {{ loop.last ? '' : '<hr>' }}
+                  {% endfor %}
+               {% else %}
+                   <p>沒有任何分享...</p>
+               {% endif %}
             </div>
          </div>
       </div>

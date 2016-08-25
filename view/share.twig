@@ -14,9 +14,9 @@
                   <label style="font-size: 110%; margin-bottom: 10px;">分類</label>
                   <select name="category" class="form-control">
                      <option>-- 選擇分類 --</option>
-                     <option value="1">網站</option>
-                     <option value="2">影片</option>
-                     <option value="3">遊戲</option>
+                     {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                     {% endfor %}
                   </select>
                </div>
 
@@ -62,9 +62,9 @@
 $('#marked').keyup(function(){
    var m = marked($('#marked').val());
    $('#marked-preview').html(m)
-  $('pre code').each(function(i, block) {
-    hljs.highlightBlock(block);
-  })
+   $('pre code').each(function(i, block) {
+      hljs.highlightBlock(block)
+   })
 })
 
 $('#show').click(function(){
@@ -73,12 +73,6 @@ $('#show').click(function(){
 })
 
 $('[data-toggle="tooltip"]').tooltip()
-
-$(document).ready(function() {
-  $('pre').each(function(i, block) {
-    hljs.highlightBlock(block)
-  })
-})
 
 $('textarea').on('keydown', function (e) {
    var keyCode = e.keyCode || e.which
