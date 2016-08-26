@@ -10,12 +10,7 @@ use Dotenv\Dotenv;
 use Carbon\Carbon;
 use Whoops\Run as Whoops;
 use Whoops\Handler\PrettyPageHandler;
-
 use App\Middleware\JwtCheck;
-use App\Middleware\CsrfCheck;
-use App\Middleware\PjaxHeader;
-use App\Middleware\TwigGlobalVar;
-use App\Middleware\MustChangePasswordAfterReset;
 
 (new Dotenv(dirname(__DIR__)))->load();
 Carbon::setLocale('zh-TW');
@@ -37,9 +32,7 @@ if ($config['debug']) {
 
 require 'services.php';
 
-$app->add(new TwigGlobalVar($container['view'], $container['auth']));
-$app->add(new CsrfCheck(['/api/*']));
-$app->add(new PjaxHeader);
+require 'global-middleware.php';
 
 $app->group('/api', function() use ($app){
    require '../routes/api.php';

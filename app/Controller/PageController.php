@@ -53,6 +53,11 @@ class PageController
       $query->execute([$id]);
       $share = $query->fetch();
 
+      if (!$share) {
+        $res = $res->withStatus(404);
+        return $this->view->render($res, 'share-not-found.twig');
+      }
+
       $query = $this->db->prepare('select * from shares where user_id = ? and id != ? order by created_at desc limit 3');
       $query->execute([$share->uid, $share->id]);
 

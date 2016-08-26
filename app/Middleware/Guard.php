@@ -21,6 +21,12 @@ class Guard
          return $next($req, $res);
       }
 
+      $path = $req->getUri()->getPath();
+      $intend = $path == $this->to ? '/profile' : $path;
+      $_SESSION['intend'] = $intend;
+
+      $_SESSION['pjaxFullReload'] = true;
+
       return $res->withRedirect($this->to);
    }
 }

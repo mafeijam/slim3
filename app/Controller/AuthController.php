@@ -52,7 +52,9 @@ class AuthController
 
          flash('success', '登入成功');
          setcookie('token', JWT::encode($token, $key), $time, '', '', false, true);
-         return $res->withRedirect('/profile');
+         $to = isset($_SESSION['intend']) ? $_SESSION['intend'] : '/profile';
+         unset($_SESSION['intend']);
+         return $res->withRedirect($to);
       }
 
       flash('errors', ['bottom' => '使用者名稱或密碼錯誤']);

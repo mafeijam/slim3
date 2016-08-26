@@ -99,7 +99,12 @@ code {
 
 .grey {
   color: #828282;
-  margin-right: 10px;
+  margin-right: 20px;
+}
+
+.form-label {
+  font-size: 110%;
+  margin-bottom: 10px;
 }
 
 #gravatar-link {
