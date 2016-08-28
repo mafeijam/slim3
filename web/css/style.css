@@ -28,6 +28,10 @@ a, button, input.form-control, textarea.form-control, select.form-control {
    transition: .5s;
 }
 
+a:active {
+  text-decoration: none;
+}
+
 input.form-control, textarea.form-control, select.form-control {
     border: 1px dashed #ccc;
     box-shadow: none;
@@ -44,10 +48,13 @@ textarea.form-control:disabled {
   cursor: auto;
 }
 
+textarea.textarea-error {
+  border-color: #A94442;
+}
+
 pre {
   background-color: #2D2D2D;
   border-color: #2D2D2D;
-  max-height: 500px;
 }
 
 code {
@@ -74,7 +81,7 @@ code {
 }
 
 .profile {
-   color: #828282;
+   color: #BDC0BA;
    font-weight: 700;
 }
 
@@ -98,8 +105,9 @@ code {
 }
 
 .grey {
-  color: #828282;
-  margin-right: 20px;
+  color: #BDC0BA;
+  margin-right: 10px;
+  font-weight: 700;
 }
 
 .form-label {
@@ -107,8 +115,25 @@ code {
   margin-bottom: 10px;
 }
 
+.counts {
+  font-size: 300%;
+  color: #BDC0BA;
+  font-weight: 700;
+}
+
 #gravatar-link {
    padding: 12px 10px 10px 10px;
+}
+
+#likeButton {
+  text-align: right;
+  padding-right: 15px;
+}
+
+#likedDetails {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
 }
 
 #marked-preview {
@@ -131,6 +156,25 @@ code {
 
 #github:hover {
    color: #1C1C1C;
+}
+
+#github-link {
+  border: 1px solid #eee;
+  border-radius: 20px;
+  color: #828282;
+  padding: 5px;
+  width: 100px;
+  text-align: center;
+}
+
+#github-link a {
+  color: #828282;
+  text-decoration: none;
+  display: block;
+}
+
+#github-link a:hover {
+  color: #1C1C1C;
 }
 
 ::-webkit-scrollbar-track {

@@ -11,7 +11,7 @@
          <div class="panel panel-default">
             <div class="panel-heading">編輯個人資料</div>
             <div class="panel-body">
-               <form action="/update" method="post" autocomplete="off">
+               <form action="/update-profile" method="post" autocomplete="off">
                   {{ csrf_field | raw }}
                   <input type="hidden" name="id" value="{{ auth.user.id}}">
 
@@ -22,6 +22,23 @@
                         <input class="form-control" type="text" id="username" value="{{ auth.user.username }}" disabled>
                      </div>
                   </div> <!-- end username -->
+
+                  <div class="form-group">
+                     <label style="font-size: 110%; margin-bottom: 10px;" for="email">電郵</label>
+                     <div class="input-group has-feedback {{ errors.email ? 'has-error' : ''}}">
+                        <span class="input-group-addon"><i class="fa fa-envelope-o w-30"></i></span>
+                        <input class="form-control" type="text" name="email" id="email"
+                               value="{{ errors.email ? old.email : auth.user.email }}">
+                        {% if errors.email %}
+                           <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                        {% endif %}
+                     </div>
+                     {% if errors.email %}
+                        <span class="help-block">
+                           <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ errors.email | first }}
+                        </span>
+                     {% endif %}
+                  </div> <!-- end email -->
 
                   <div class="form-group">
                      <label style="font-size: 110%; margin-bottom: 10px;" for="nickname">別名</label>
@@ -58,21 +75,13 @@
                   </div> <!-- end come from -->
 
                   <div class="form-group">
-                     <label style="font-size: 110%; margin-bottom: 10px;" for="email">電郵</label>
-                     <div class="input-group has-feedback {{ errors.email ? 'has-error' : ''}}">
-                        <span class="input-group-addon"><i class="fa fa-envelope-o w-30"></i></span>
-                        <input class="form-control" type="text" name="email" id="email"
-                               value="{{ errors.email ? old.email : auth.user.email }}">
-                        {% if errors.email %}
-                           <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-                        {% endif %}
+                     <label style="font-size: 110%; margin-bottom: 10px;" for="github">Github</label>
+                     <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-github w-30"></i></span>
+                        <input class="form-control" type="text" name="github" id="github"
+                               value="{{ errors.github ? old.github : auth.user.github }}">
                      </div>
-                     {% if errors.email %}
-                        <span class="help-block">
-                           <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ errors.email | first }}
-                        </span>
-                     {% endif %}
-                  </div> <!-- end email -->
+                  </div> <!-- end come from -->
 
                   <div class="form-group">
                      <label style="font-size: 110%; margin-bottom: 10px;" for="description">簡介</label>

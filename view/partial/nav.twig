@@ -28,7 +28,9 @@
 
               <li>
                 {% set name = auth.user.nickname ? auth.user.nickname : auth.user.username %}
-                <a id="gravatar-link" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <a id="gravatar-link" href="#" class="dropdown-toggle"
+                   data-hover="dropdown" data-toggle="dropdown" data-delay="300"
+                   role="button" aria-haspopup="true" aria-expanded="false">
                   {{ gravatar(28) | raw }}{{ name }} <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">

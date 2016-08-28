@@ -57,7 +57,7 @@ $container['changePasswordValidator'] = function($c) {
 
    $customErrors = array_get($c['customErrors'], ['notEmpty', 'noWhitespace', 'length', 'equals']);
 
-   return new App\Middleware\Validator($rules, $customErrors, 'changepassword');
+   return new App\Middleware\Validator($rules, $customErrors, 'change-password');
 };
 
 $container['resetPasswordValidator'] = function($c) {

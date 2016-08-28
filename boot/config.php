@@ -21,7 +21,7 @@ return [
    ],
 
    'mailtrap' => [
-      'username' => env('MAIL_USERNAME'),
-      'password' => env('MAIL_PASSWORD')
+      'username' => env('MAILTRAP_USERNAME'),
+      'password' => env('MAILTRAP_PASSWORD')
    ]
 ];

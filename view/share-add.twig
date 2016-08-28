@@ -1,0 +1,89 @@
+{% extends 'default.twig' %}
+
+{% block body %}
+<div class="row">
+   <div id="content" class="col-md-12">
+      <form action="/share" method="post" autocomplete="off">
+         {{ csrf_field | raw }}
+         <div class="panel panel-info">
+            <div class="panel-heading" style="font-size: 150%; text-align: center;">開心 Share</div>
+
+            <div class="panel-body">
+
+               <div class="form-group">
+                  <label class="form-label">分類</label>
+                  <div class="input-group has-feedback {{ errors.category ? 'has-error' : ''}}">
+                     <span class="input-group-addon"><i class="fa fa-tag w-30"></i></span>
+                     <select name="category" class="form-control has-error">
+                        <option value="">-- 選擇分類 --</option>
+                        {% for category in categories %}
+                           <option {{ old.category == category.id ? 'selected' : ''}}
+                                   value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                     </select>
+                  </div>
+                  {% if errors.category %}
+                     <span class="help-block">
+                        <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ errors.category | first }}
+                     </span>
+                  {% endif %}
+               </div>
+
+                  <div class="form-group">
+                     <label class="form-label" for="title">標題</label>
+                     <div class="input-group has-feedback {{ errors.title ? 'has-error' : ''}}">
+                        <span class="input-group-addon"><i class="fa fa-pencil w-30"></i></span>
+                        <input class="form-control" type="text" name="title" id="title" value="{{ old.title }}">
+                        {% if errors.title %}
+                           <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                        {% endif %}
+                     </div>
+                     {% if errors.title %}
+                        <span class="help-block">
+                           <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ errors.title | first }}
+                        </span>
+                     {% endif %}
+
+                  </div>
+
+               <div class="form-group">
+                  <label class="form-label" for="body">
+                     內容
+                     <small style="color: #828282; font-style: italic; font-size: 70%;">支援 Markdown</small>
+                     <a data-placement="top" data-toggle="tooltip" title="語法說明" target="_blank"
+                        style="margin-left: 5px; color: #828282" href="http://markdown.tw/">
+                        <i class="fa fa-question-circle"></i>
+                     </a>
+                  </label>
+
+                  <textarea id="marked" class="form-control {{ errors.body ? 'textarea-error' : ''}}" name="body" id="body" rows="13"></textarea>
+               </div>
+               {% if errors.body %}
+                  <span class="help-block">
+                     <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ errors.body | first }}
+                  </span>
+               {% endif %}
+
+               <div class="t-right">
+                  <div id="show" class="btn btn-success"><i class="fa fa-eye mr-7"></i>預覽開闢</div>
+                  <button type="submit" class="btn btn-primary"><i class="fa fa-check mr-7"></i>發表</button>
+               </div>
+            </div>
+         </div>
+      </form>
+   </div>
+
+   <div id="preview" class="col-md-12 hide">
+      <div class="panel panel-default">
+         <div class="panel-heading" style="font-size: 150%; text-align: center;">內容預覽</div>
+         <div class="panel-body">
+            <div id="marked-preview"></div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<script src="/js/marked.min.js"></script>
+<script src="/js/form.js"></script>
+<script src="/js/share.js"></script>
+{% endblock %}

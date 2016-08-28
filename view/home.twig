@@ -3,18 +3,22 @@
 {% block body %}
    <div class="row">
       <div class="col-md-8">
-         <div class="panel panel-info">
-            <div class="panel-heading">分類</div>
+         <div class="panel panel-default">
             <div class="panel-body">
-               {% for share in shares %}
-                  <div style="float: left">{{ gravatar(50, share.email) | raw }}</div>
-                  <a style="font-size: 150%; display: block;" class="share-title plink" href="/share/{{ share.id }}">{{ share.title }}</a>
-                  <small><em>作者：</em> <span class="grey">{{ share.username }}</span></small>
-                  <small><em>分類：</em> <span class="grey">{{ share.cat_name }}</span></small>
-                  <small><em>發表於：</em> <span class="grey">{{ share.created_at | diffForHumans }}</span></small>
-                  <small><em>點閱：</em> <span class="grey">{{ share.views }}</span></small>
-                  {{ loop.last ? '' : '<hr>' }}
-               {% endfor %}
+               {% if shares %}
+                  {% for share in shares %}
+                     <div style="float: left">{{ gravatar(50, share.email) | raw }}</div>
+                     <a style="font-size: 150%; display: block;" class="share-title plink" href="/share/{{ share.id }}">{{ share.title }}</a>
+                     <small>作者：<span class="grey">{{ share.username }}</span></small>
+                     <small>分類：<span class="grey">{{ share.cat_name }}</span></small>
+                     <small>點閱：<span class="grey">{{ share.views }}</span></small>
+                     <small>好野：<span class="grey">{{ share.likes }}</span></small>
+                     <small>發表於：<span class="grey">{{ share.created_at | diffForHumans }}</span></small>
+                     {{ loop.last ? '' : '<hr>' }}
+                  {% endfor %}
+               {% else %}
+                  未有任何分享
+               {% endif %}
             </div>
          </div>
       </div>
@@ -37,8 +41,8 @@
             <div class="panel-heading" style="text-align: center">熱門分享</div>
             <div class="panel-body">
                {% for hot in hots %}
-                  <a style="font-size: 120%;" class="share-title plink" href="/share/{{ hot.id }}">
-                     {{ hot.title }}
+                  <a style="font-size: 120%; display: block" class="share-title plink" href="/share/{{ hot.id }}">
+                     <i class="fa fa-caret-right mr-7" aria-hidden="true"></i>{{ hot.title }}
                   </a>
                {% endfor %}
             </div>

@@ -4,27 +4,34 @@
    <div class="panel-body">
       <p style="text-align: center;">{{ gravatar(200) | raw }}</p>
       <hr>
+      <p>ID：<span class="profile">{{ auth.user.id }}</span></p>
       <p>使用者：<span class="profile">{{ auth.user.username }}</span></p>
       <p>註冊於：
-         <span style="cursor: pointer;" class="profile" data-placement="right" data-toggle="tooltip" title="{{ auth.user.joined_at }}">
-            {{ auth.user.joined_ago }}
+         <span style="cursor: help;" class="profile" data-placement="right" data-toggle="tooltip" title="{{ auth.user.joined_at }}">
+            {{ auth.user.joined_at | diffForHumans }}
          </span>
       </p>
       <p>上一次登入：
-         <span style="cursor: pointer;" class="profile" data-placement="right" data-toggle="tooltip" title="{{ auth.user.last_login }}">
-            {{ auth.user.last_ago }}
+         <span class="profile">
+            {{ auth.user.last_login }}
          </span>
       </p>
+      {% if auth.user.github %}
+         <div id="github-link">
+            <a href="https://github.com/{{ auth.user.github }}" target="_blank">
+               <i class="fa fa-github mr-7"></i>Github
+            </a>
+         </div>
+      {% endif %}
       <hr>
       <div style="display: flex; justify-content: center;">
-         <a class="btn btn-warning plink mr-7" href="/changepassword">
+         <a class="btn btn-warning plink mr-7" href="/change-password">
             <i class="fa fa-cog mr-7" aria-hidden="true"></i>更改密碼
          </a>
-         <a class="btn btn-success plink" href="/update">
+         <a class="btn btn-success plink" href="/update-profile">
             <i class="fa fa-pencil-square-o mr-7" aria-hidden="true"></i>編輯個人資料
          </a>
       </div>
-
 
       {% if auth.user.active == false %}
          <hr>
@@ -32,12 +39,26 @@
             <p style="margin-bottom: 10px;">如要開啟分享功能，請進行電郵驗證</p>
             <form action="/reactive" method="post">
                {{ csrf_field | raw }}
-               <button class="btn btn-danger">按此重發驗證碼</button>
+               <button class="btn btn-danger"><i class="fa fa-retweet mr-7"></i>按此重發驗證碼</button>
             </form>
          </div>
       {% endif %}
 
    </div> <!-- end panel body -->
+</div>
+
+<div class="panel panel-info">
+   <div class="panel-heading">統計資料</div>
+   <div class="panel-body" style="display: flex; justify-content: space-between">
+      <div style="text-align: center;">
+         <p class="counts">{{ shared() }}</p>
+         <p>分享</p>
+      </div>
+      <div style="text-align: center;">
+         <p class="counts">10</p>
+         <p>回應</p>
+      </div>
+   </div>
 </div>
 
 <script>

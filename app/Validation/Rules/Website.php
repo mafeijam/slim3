@@ -8,7 +8,7 @@ class Website extends AbstractRule
 {
    public function validate($input)
    {
-      addHttpPrefix($input);
+      add_http_prefix($input);
 
       return filter_var($input, FILTER_VALIDATE_URL);
    }

@@ -6,10 +6,11 @@ $(document).on('pjax:send', function() {
    NProgress.start()
 })
 
-$(document).on('pjax:end', function() {
+$(document).on('pjax:end', function(){
    NProgress.done()
    setActive()
-   $('.form-control').eq(0).focus()
+   var i = document.location.pathname == '/update' ? 1 : 0
+   $('.form-control').eq(i).focus()
    $('#sticky').stick_in_parent({
       'offset_top': 70
    })

@@ -5,12 +5,13 @@ session_start();
 require '../vendor/autoload.php';
 require 'helper.php';
 
-use Slim\App;
+use App\App;
+use App\Auth\Guard;
+use App\Middleware\JwtCheck;
 use Dotenv\Dotenv;
 use Carbon\Carbon;
 use Whoops\Run as Whoops;
 use Whoops\Handler\PrettyPageHandler;
-use App\Middleware\JwtCheck;
 
 (new Dotenv(dirname(__DIR__)))->load();
 Carbon::setLocale('zh-TW');
@@ -30,7 +31,13 @@ if ($config['debug']) {
    $whoops->register();
 }
 
-require 'services.php';
+foreach (glob(__DIR__ . '/setup-*.php') as $setup) {
+   require $setup;
+}
+
+$container['auth'] = function($c) {
+   return new Guard($c['jwt']);
+};
 
 require 'global-middleware.php';
 

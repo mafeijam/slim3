@@ -2,28 +2,58 @@
 
 namespace App\Auth;
 
-use PDO;
 use Exception;
 use Firebase\JWT\JWT;
-use Carbon\Carbon;
 
 class Guard
 {
-   protected $db;
+   protected $jwt;
    protected $authUser = null;
    protected $userProfile;
 
-   public function __construct(PDO $db, $key, array $alg = ['HS256'])
+   public function __construct($jwt, array $alg = ['HS256'])
    {
-      $this->db = $db;
+      $this->jwt = $jwt;
 
       if (isset($_COOKIE['token'])) {
          try {
-            $this->authUser = JWT::decode($_COOKIE['token'], $key, $alg)->user;
+            $this->authUser = JWT::decode($_COOKIE['token'], $jwt['key'], $alg)->user;
+            $this->userProfile = db('select * from users where id = ?', [$this->authUser->id])->fetch();
          } catch (Exception $e) {
             $this->authUser = null;
          }
       }
+   }
+
+   function login($username, $password, $remember)
+   {
+      extract($this->jwt);
+      $user = db('select id, username, password from users where username = ?', [$username])->fetch();
+      if ($user && password_verify($password, $user->password)) {
+         db('update users set last_login = NOW() where id = ?', [$user->id]);
+
+         $time = isset($remember) ? time() + 3600*24*365 : time() + $exp;
+
+         $token = [
+            'user' => [
+               'id' => $user->id,
+               'name' => $user->username
+            ],
+            'exp' => $time
+         ];
+
+         flash('success', '登入成功');
+         setcookie('token', JWT::encode($token, $key), $time, '', '', false, true);
+         return true;
+      }
+
+      return false;
+   }
+
+   public function logout()
+   {
+      setcookie('token', '', time() - 1);
+      session_destroy();
    }
 
    public function check()
@@ -33,27 +63,6 @@ class Guard
 
    public function user()
    {
-      if ($this->check()) {
-
-         if (isset($this->userProfile)) {
-            return $this->userProfile;
-         }
-
-         $query = $this->db->prepare('select * from users where id = ?');
-         $query->execute([$this->authUser->id]);
-         $user = $query->fetch();
-         $this->userProfile = $user;
-         $this->userProfile->joined_ago = $this->diffForHumans($user->joined_at);
-         $this->userProfile->last_ago = $this->diffForHumans($user->last_login);
-
-         return $this->userProfile;
-      }
-
-      return null;
-   }
-
-   protected function diffForHumans($time)
-   {
-      return Carbon::createFromTimestamp(strtotime($time))->diffForHumans();
+      return $this->userProfile;
    }
 }
