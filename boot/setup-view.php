@@ -1,50 +1,39 @@
 <?php
 
 use Carbon\Carbon;
-use Aptoma\Twig\Extension\MarkdownEngine;
+use Slim\Views\Twig;
+use Slim\Views\TwigExtension;
 use Aptoma\Twig\Extension\MarkdownExtension;
+use Aptoma\Twig\Extension\MarkdownEngine\MichelfMarkdownEngine;
 
 $container['view'] = function($c) {
-   $view = new Slim\Views\Twig(__DIR__ . '/../view');
+   $view = new Twig(__DIR__ . '/../view');
 
-   $view->addExtension(new Slim\Views\TwigExtension(
+   $view->addExtension(new TwigExtension(
        $c['router'],
        $c['request']->getUri()
    ));
 
-   $engine = new MarkdownEngine\MichelfMarkdownEngine;
-   $view->addExtension(new MarkdownExtension($engine));
-   $view->addExtension(new App\TwigExtension\Gravatar($c['auth']));
+   $view->addExtension(new MarkdownExtension(new MichelfMarkdownEngine));
 
    $env = $view->getEnvironment();
 
    $env->addGlobal('auth', [
-      'check' => $c['auth']->check(),
-      'user' => $c['auth']->user()
+      'check' => auth()->check(),
+      'user' => auth()->user()
    ]);
 
    $desktop = preg_match('/windows|win32/i', $_SERVER['HTTP_USER_AGENT']) ? true : false;
-
    $env->addGlobal('isDesktop', $desktop);
 
-   if ($c['auth']->check()) {
-      $shared = new Twig_SimpleFunction('shared', function(){
-         return db('select count(id) as count from shares where user_id = ?', [auth('id')])->fetch()->count;
-      });
-      $env->addFunction($shared);
+   $twigFunctions = require 'twig-function.php';
+   foreach ($twigFunctions as $function) {
+      $env->addFunction($function);
    }
 
-   $diffForHumans = new Twig_SimpleFilter('diffForHumans', function ($string) {
+   $env->addFilter(new Twig_SimpleFilter('diffForHumans', function ($string) {
       return Carbon::createFromTimestamp(strtotime($string))->diffForHumans();
-   });
-
-   $env->addFilter($diffForHumans);
-
-   $isLiked = new Twig_SimpleFunction('isLiked', function($id, $shareId) {
-      return db('select * from share_like where user_id = ? and share_id = ?', [$id, $shareId])->rowCount();
-   });
-
-   $env->addFunction($isLiked);
+   }));
 
    return $view;
 };

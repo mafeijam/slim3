@@ -1,0 +1,15 @@
+<div style="display: flex; justify-content: center;">
+   <div style="position: fixed; width: 300px; z-index: 999999; top: 10px;" class="animated slideInDown">
+      {% if success %}
+         <div class="alert alert-success auto-disappear" style="text-align: center;" role="alert">
+            <i class="fa fa-check" aria-hidden="true"></i> {{ success }}
+         </div>
+      {% endif %}
+
+      {% if errors.message %}
+         <div class="alert alert-danger auto-disappear" style="text-align: center;" role="alert">
+            <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ errors.message }}
+         </div>
+      {% endif %}
+   </div>
+</div>

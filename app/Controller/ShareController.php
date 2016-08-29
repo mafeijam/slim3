@@ -47,7 +47,7 @@ class ShareController
                   where shares.id = ?', [$id])->fetch();
 
       if ($share->id == null) {
-         return view($res->withStatus(404), 'share-not-found');
+         return view($res->withStatus(404), 'share.not-found');
       }
 
       if (is_page_refresh() == false && is_me($share->user_id) == false) {
@@ -62,14 +62,14 @@ class ShareController
          $likedUsers = db('select email, id from users where id in ('.$share->liked_users.')')->fetchAll();
       }
 
-      return view($res, 'share-single', compact('share', 'others', 'likedUsers'));
+      return view($res, 'share.single', compact('share', 'others', 'likedUsers'));
    }
 
    public function create($req, $res)
    {
       $categories = db('select * from categories');
 
-      return view($res, 'share-add', compact('categories'));
+      return view($res, 'share.create', compact('categories'));
    }
 
    public function save($req, $res)

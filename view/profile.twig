@@ -15,11 +15,10 @@
                   {% for share in recents %}
                      <a style="font-size: 120%; padding-right: 5px; display: block" class="share-title plink" href="/share/{{ share.id }}">{{ share.title }}</a>
                      <div style="margin-top: 10px;">
-                        <small>分類：<span class="grey">{{ share.cat_name }}</span></small>
-                        <small>點閱：<span class="grey">{{ share.views }}</span></small>
-                        <small>回應：<span class="grey">0</span></small>
-                        <small>好野：<span class="grey">{{ share.likes }}</span></small>
-                        <small>發表於：<span class="grey">{{ share.created_at | diffForHumans }}</span></small>
+                        <small><i class="fa fa-tag mr-7"></i><span class="grey">{{ share.cat_name }}</span></small>
+                        <small><i class="fa fa-eye mr-7"></i><span class="grey">{{ share.views }}</span></small>
+                        <small><i class="fa fa-thumbs-o-up mr-7"></i><span class="grey">{{ share.likes }}</span></small>
+                        <small><i class="fa fa-clock-o mr-7"></i><span class="grey">{{ share.created_at | diffForHumans }}</span></small>
                      </div>
                      {{ loop.last ? '' : '<hr>' }}
                   {% endfor %}

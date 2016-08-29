@@ -5,7 +5,7 @@ namespace App\Auth;
 use Exception;
 use Firebase\JWT\JWT;
 
-class Guard
+class Auth
 {
    protected $jwt;
    protected $authUser = null;

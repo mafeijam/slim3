@@ -3,17 +3,14 @@
 namespace App\Middleware;
 
 use Slim\Views\Twig;
-use App\Auth\Guard;
 
 class TwigGlobalVar
 {
    protected $twig;
-   protected $auth;
 
-   public function __construct(Twig $twig, Guard $auth)
+   public function __construct(Twig $twig)
    {
       $this->twig = $twig;
-      $this->auth = $auth;
    }
 
    public function __invoke($req, $res, $next)

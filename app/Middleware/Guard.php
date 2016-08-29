@@ -2,14 +2,14 @@
 
 namespace App\Middleware;
 
-use App\Auth\Guard;
+use App\Auth\Auth;
 
 class Guard
 {
    protected $auth;
    protected $to;
 
-   public function __construct(Guard $auth, $to = '/login')
+   public function __construct(Auth $auth, $to = '/login')
    {
       $this->auth = $auth;
       $this->to = $to;

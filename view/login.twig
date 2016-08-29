@@ -20,9 +20,8 @@
                         {% endif %}
                      </div>
                      {% if errors.username %}
-                        <span class="help-block">
-                           <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ errors.username | first }}
-                        </span>
+                        {% set message = errors.username %}
+                        {% include 'partial/help-block.twig' with message %}
                      {% endif %}
 
                   </div>
@@ -37,9 +36,8 @@
                         {% endif %}
                      </div>
                      {% if errors.password %}
-                        <span class="help-block">
-                           <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ errors.password | first }}
-                        </span>
+                        {% set message = errors.password %}
+                        {% include 'partial/help-block.twig' with message %}
                      {% endif %}
 
                   </div>

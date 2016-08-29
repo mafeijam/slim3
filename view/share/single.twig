@@ -6,9 +6,9 @@
          <div class="panel panel-default">
             <div class="panel-heading" style="padding-bottom: 20px;">
                <div style="font-size: 200%; padding-bottom: 10px;">{{ share.title }}</div class="share-title">
-               <small>分類：<span class="grey">{{ share.cat_name }}</span></small>
-               <small>點閱：<span class="grey">{{ share.views }}</span></small>
-               <small>發表於：<span class="grey">{{ share.created_at | diffForHumans }}</span></small>
+               <small><i class="fa fa-tag mr-7"></i><span class="grey">{{ share.cat_name }}</span></small>
+               <small><i class="fa fa-eye mr-7"></i><span class="grey">{{ share.views }}</span></small>
+               <small><i class="fa fa-clock-o mr-7"></i><span class="grey">{{ share.created_at | diffForHumans }}</span></small>
             </div>
 
             <div class="panel-body">
@@ -35,10 +35,10 @@
 
       <div class="col-md-3">
          <div class="panel panel-info">
-            <div class="panel-heading">作者：<span class="grey">{{ share.username }}</span></div>
+            <div class="panel-heading" style="text-align: center">作者</div>
             <div class="panel-body" style="text-align: center;">
                {{ gravatar(120, share.email) | raw }}
-
+               <div class="grey">{{ share.username }}</div>
                {% if share.description %}
                   <div style="margin-top: 15px;">{{ share.description }}</div >
                {% endif %}
@@ -53,16 +53,19 @@
             </div>
          </div>
 
-         <div class="panel panel-success">
-            <div class="panel-heading" style="text-align: center">作者的其他分享</div>
-            <div class="panel-body">
-               {% for other in others %}
-                  <a style="font-size: 120%; display: block; padding-bottom: 5px;" class="share-title plink" href="/share/{{ other.id }}">
-                     <i class="fa fa-caret-right mr-7" aria-hidden="true"></i>{{ other.title }}
-                  </a>
-               {% endfor %}
+         {% if others %}
+            <div class="panel panel-success">
+               <div class="panel-heading" style="text-align: center">作者的其他分享</div>
+               <div class="panel-body">
+                  {% for other in others %}
+                     <a style="font-size: 120%; display: block; padding-bottom: 5px;" class="share-title plink" href="/share/{{ other.id }}">
+                        <i class="fa fa-caret-right mr-7" aria-hidden="true"></i>{{ other.title }}
+                     </a>
+                  {% endfor %}
+               </div>
             </div>
-         </div>
+         {% endif %}
+
       </div>
 
 

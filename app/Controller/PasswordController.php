@@ -6,7 +6,7 @@ class PasswordController
 {
    public function index($req, $res)
    {
-      return view($res, 'change-password');
+      return view($res, 'password.change');
    }
 
    public function update($req, $res)
@@ -28,19 +28,19 @@ class PasswordController
 
    public function getForget($req, $res)
    {
-      return view($res, 'forget');
+      return view($res, 'password.forget');
    }
 
    public function postForget($req, $res)
    {
       $email = $req->getParam('email');
-      $query = db('select * from users where email = ?', [$email]);
-      $user = $query->fetch();
+      $user = db('select * from users where email = ?', [$email])->fetch();
       $token = random_str(60);
 
       mailer($email, $user->username, 'reset', ['token' => $token]);
 
-      db('update users set reset_token = ?, reset_exp = DATE_ADD(NOW(), INTERVAL 1 HOUR) where id = ?', [$token, $user->id]);
+      db('update users set reset_token = ?, reset_exp = DATE_ADD(NOW(), INTERVAL 1 HOUR) where id = ?',
+         [$token, $user->id]);
 
       flash('success', '重設密碼連結已發送');
       return $res->withRedirect('forget');
@@ -52,10 +52,10 @@ class PasswordController
       $query = db('select reset_token, reset_exp from users where reset_token = ?', [$token]);
 
       if ($query->rowCount() && strtotime($query->fetch()->reset_exp) > time()) {
-         return view($res, 'reset-password', ['reset_token' => $token]);
+         return view($res, 'password.reset', ['reset_token' => $token]);
       }
 
-      return view($res, 'reset-error');
+      return view($res, 'password.reset-error');
    }
 
    public function postReset($req, $res)
@@ -65,7 +65,8 @@ class PasswordController
 
       if ($user) {
          $password = password_hash($password, PASSWORD_DEFAULT);
-         db('update users set password = ?, reset_token = null, reset_exp = null where id = ?', [$password, $user->id]);
+         db('update users set password = ?, reset_token = null, reset_exp = null where id = ?',
+            [$password, $user->id]);
          flash('success', '密碼更改成功');
          return $res->withRedirect('login');
       }

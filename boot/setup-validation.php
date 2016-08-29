@@ -50,7 +50,7 @@ $container['registerValidator'] = function($c) {
 
 $container['changePasswordValidator'] = function($c) {
    $rules = [
-      'password'     => v::notEmpty()->noWhitespace()->length(6, 255)->setName('舊密碼'),
+      'password'     => v::notEmpty()->setName('舊密碼'),
       'new_password' => v::notEmpty()->noWhitespace()->length(6, 255)->setName('新密碼'),
       'password_cfm' => v::equals($c['request']->getParam('new_password')),
    ];
@@ -81,7 +81,7 @@ $container['updateValidator'] = function($c) {
 
    $customErrors = array_get($c['customErrors'], ['notEmpty', 'email']);
 
-   return new App\Middleware\Validator($rules, $customErrors, 'update');
+   return new App\Middleware\Validator($rules, $customErrors, 'update-profile');
 };
 
 $container['shareValidator'] = function($c) {

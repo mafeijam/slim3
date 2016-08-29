@@ -6,7 +6,7 @@ require '../vendor/autoload.php';
 require 'helper.php';
 
 use App\App;
-use App\Auth\Guard;
+use App\Auth\Auth;
 use App\Middleware\JwtCheck;
 use Dotenv\Dotenv;
 use Carbon\Carbon;
@@ -36,7 +36,7 @@ foreach (glob(__DIR__ . '/setup-*.php') as $setup) {
 }
 
 $container['auth'] = function($c) {
-   return new Guard($c['jwt']);
+   return new Auth($c['jwt']);
 };
 
 require 'global-middleware.php';

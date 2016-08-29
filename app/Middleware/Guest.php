@@ -2,13 +2,13 @@
 
 namespace App\Middleware;
 
-use App\Auth\Guard;
+use App\Auth\Auth;
 
 class Guest
 {
    protected $auth;
 
-   public function __construct(Guard $auth)
+   public function __construct(Auth $auth)
    {
       $this->auth = $auth;
    }
