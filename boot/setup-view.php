@@ -23,9 +23,6 @@ $container['view'] = function($c) {
       'user' => auth()->user()
    ]);
 
-   $desktop = preg_match('/windows|win32/i', $_SERVER['HTTP_USER_AGENT']) ? true : false;
-   $env->addGlobal('isDesktop', $desktop);
-
    $twigFunctions = require 'twig-function.php';
    foreach ($twigFunctions as $function) {
       $env->addFunction($function);

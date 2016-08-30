@@ -6,6 +6,19 @@ class ShareController
 {
    public function index($req, $res)
    {
+      $total = db('select count(id) as total from shares')->fetch()->total;
+      $perPage = 2;
+      $page = (int) $req->getQueryParam('p', 1);
+      $pages = ceil($total/$perPage);
+      $start = ($page - 1) * $perPage;
+
+      if ($page < 1 || $page > $pages) {
+         return $res->withRedirect('/');
+      }
+
+      $prev = $page - 1 == 0 ? 1 : $page - 1;
+      $next = $page + 1 > $pages ? $pages : $page + 1;
+
       $shares = db('select shares.*,
                      users.username, users.email,
                      categories.name as cat_name,
@@ -18,14 +31,13 @@ class ShareController
                      left join share_like
                      on share_like.share_id = shares.id
                      group by shares.id
-                     order by shares.created_at desc')
+                     order by shares.created_at desc
+                     limit ?, ?', [$start, $perPage])
             ->fetchAll();
-
-      $ids = array_column($shares, 'id');
 
       $hots = db('select * from shares order by views desc limit 5')->fetchAll();
 
-      return view($res, 'home', compact('shares', 'hots'));
+      return view($res, 'home', compact('shares', 'hots', 'pages', 'page', 'prev', 'next'));
    }
 
    public function show($req, $res, $args)

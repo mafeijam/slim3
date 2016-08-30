@@ -23,6 +23,12 @@
                {% endif %}
             </div>
          </div>
+
+         <div>
+            {% if pages > 1 %}
+               {% include 'partial/pagination.twig' with [pages, page, prev, next] %}
+            {% endif %}
+         </div>
       </div>
 
       <div class="col-md-4" id="sticky">

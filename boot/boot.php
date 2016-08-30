@@ -18,6 +18,11 @@ Carbon::setLocale('zh-TW');
 
 $config = require 'config.php';
 
+if ($config['useCustomResolver']) {
+   $customResolver = require 'custom-resolver.php';
+   $config = array_merge($config, $customResolver);
+}
+
 $app = new App($config);
 
 $container = $app->getContainer();

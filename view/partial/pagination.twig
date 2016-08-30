@@ -1,0 +1,29 @@
+ {% set prevLink %}
+   {% if page > 1 %}
+      <li><a class="plink" href="/?p={{ prev }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+   {% else %}
+      <li class="disabled"><span aria-hidden="true">&laquo;</span></li>
+   {% endif %}
+{% endset %}
+
+{% set nextLink %}
+   {% if page < pages %}
+      <li><a class="plink" href="/?p={{ next }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+   {% else %}
+      <li class="disabled"><span aria-hidden="true">&raquo;</span></li>
+   {% endif %}
+{% endset %}
+
+<nav>
+   <ul class="pagination">
+      {{ prevLink | raw }}
+      {% for i in 1..pages %}
+         {% if i == page %}
+            <li class="active"><a>{{i}}</a></li>
+         {% else %}
+            <li><a class="plink" href="/?p={{i}}">{{i}}</a></li>
+         {% endif %}
+      {% endfor %}
+      {{ nextLink | raw }}
+   </ul>
+</nav>

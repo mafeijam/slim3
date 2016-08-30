@@ -7,6 +7,8 @@ return [
 
    'debug' => true,
 
+   'useCustomResolver' => false,
+
    'jwt' => [
       'key' => env('JWT_KEY'),
       'exp' => env('JWT_EXP', 3600)
