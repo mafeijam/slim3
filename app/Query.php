@@ -62,6 +62,34 @@ class Query
 
    public function getLikedUsers($share)
    {
-      return db('select email, id from users where id in ('.$share->liked_users.')')->fetchAll();
+      return db('select username, email, id from users where id in ('.$share->liked_users.')')->fetchAll();
+   }
+
+   public function saveShare($req)
+   {
+      extract($req->getParams());
+      db('insert into shares set user_id = ?, cat_id = ?, title = ?, body = ?',
+         [auth('id'), $category, $title, $body]);
+   }
+
+   public function toggleLike($shareId)
+   {
+      $key = [auth('id'), $shareId];
+
+      $isLiked = db('select * from share_like where user_id = ? and share_id = ?', $key)->fetch();
+
+      if ($isLiked) {
+         db('delete from share_like where user_id = ? and share_id = ?', $key);
+      } else {
+         db('insert into share_like (user_id, share_id)
+               select ?, ?
+               from shares
+               where exists (
+                  select id
+                  from shares
+                  where id = ?)
+               limit 1',
+            [auth('id'), $shareId, $shareId]);
+      }
    }
 }

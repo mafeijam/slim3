@@ -15,7 +15,7 @@
                   {{ csrf_field | raw }}
 
                   <div class="form-group">
-                     <label style="font-size: 110%; margin-bottom: 10px;" for="username">使用者名稱</label>
+                     <label class="form-label" for="username">使用者名稱</label>
                      <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-user w-30"></i></span>
                         <input class="form-control" type="text" id="username" value="{{ auth.user.username }}" disabled>
@@ -23,7 +23,7 @@
                   </div> <!-- end username -->
 
                   <div class="form-group">
-                     <label style="font-size: 110%; margin-bottom: 10px;" for="email">電郵</label>
+                     <label class="form-label" for="email">電郵</label>
                      <div class="input-group has-feedback {{ errors.email ? 'has-error' : ''}}">
                         <span class="input-group-addon"><i class="fa fa-envelope-o w-30"></i></span>
                         <input class="form-control" type="text" name="email" id="email"
@@ -39,7 +39,7 @@
                   </div> <!-- end email -->
 
                   <div class="form-group">
-                     <label style="font-size: 110%; margin-bottom: 10px;" for="nickname">別名</label>
+                     <label class="form-label" for="nickname">別名</label>
                      <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-user-secret w-30"></i></span>
                         <input class="form-control" type="text" name="nickname" id="nickname" value="{{ auth.user.nickname }}">
@@ -47,7 +47,7 @@
                   </div><!-- end nickname -->
 
                   <div class="form-group">
-                     <label style="font-size: 110%; margin-bottom: 10px;" for="website">個人網站</label>
+                     <label class="form-label" for="website">個人網站</label>
                      <div class="input-group has-feedback {{ errors.website ? 'has-error' : ''}}">
                         <span class="input-group-addon"><i class="fa fa-globe w-30"></i></span>
                         <input class="form-control" type="text" name="website" id="website"
@@ -63,7 +63,7 @@
                   </div> <!-- end website -->
 
                   <div class="form-group">
-                     <label style="font-size: 110%; margin-bottom: 10px;" for="come_from">來自</label>
+                     <label class="form-label" for="come_from">來自</label>
                      <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-map-marker w-30"></i></span>
                         <input class="form-control" type="text" name="come_from" id="come_from"
@@ -72,7 +72,7 @@
                   </div> <!-- end come from -->
 
                   <div class="form-group">
-                     <label style="font-size: 110%; margin-bottom: 10px;" for="github">Github</label>
+                     <label class="form-label" for="github">Github</label>
                      <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-github w-30"></i></span>
                         <input class="form-control" type="text" name="github" id="github"
@@ -81,7 +81,7 @@
                   </div> <!-- end come from -->
 
                   <div class="form-group">
-                     <label style="font-size: 110%; margin-bottom: 10px;" for="description">簡介</label>
+                     <label class="form-label" for="description">簡介</label>
                      <textarea class="form-control" name="description" id="description" rows="5">{{ auth.user.description }}</textarea>
                   </div> <!-- end desc -->
 

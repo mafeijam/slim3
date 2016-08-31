@@ -1,4 +1,4 @@
- {% set prevLink %}
+{% set prevLink %}
    {% if page > 1 %}
       <li><a class="plink" href="/?p={{ prev }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
    {% else %}
@@ -15,7 +15,7 @@
 {% endset %}
 
 <nav>
-   <ul class="pagination">
+   <ul class="pagination pagination-sm">
       {{ prevLink | raw }}
       {% for i in 1..pages %}
          {% if i == page %}

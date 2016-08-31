@@ -16,7 +16,7 @@ class AuthController
 
       flash('errors', ['bottom' => '使用者名稱或密碼錯誤']);
       flash('old', $req->getParams());
-      return $res->withRedirect('login');
+      return back($res);
    }
 
    public function logout($req, $res)

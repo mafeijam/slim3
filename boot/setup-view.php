@@ -32,5 +32,9 @@ $container['view'] = function($c) {
       return Carbon::createFromTimestamp(strtotime($string))->diffForHumans();
    }));
 
+   $env->addFilter(new Twig_SimpleFilter('slug', function ($string) {
+      return trim(str_replace(' ', '-', $string));
+   }));
+
    return $view;
 };

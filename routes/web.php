@@ -3,7 +3,7 @@
 $app->get('/', 'ShareController:index');
 
 $app->get('/active/{code}', 'AuthController:active');
-$app->get('/share/{id}', 'ShareController:show');
+$app->get('/share/{id}[/{title}]', 'ShareController:show');
 
 $app->group('/', function(){
    $this->get('login', 'PageController:login');
@@ -28,6 +28,7 @@ $app->group('/', function(){
    $this->get('share', 'ShareController:create')->add('isActive');
    $this->post('share', 'ShareController:save')->add('shareValidator');
    $this->get('share/{id}/like', 'ShareController:toggleLike');
+   $this->post('comments', 'ShareController:comments')->add('commentsValidator');
 })->add('guard');
 
 

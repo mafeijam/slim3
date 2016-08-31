@@ -46,7 +46,14 @@ class ShareController
          $likedUsers = q()->getLikedUsers($share);
       }
 
-      return view($res, 'share.single', compact('share', 'others', 'likedUsers'));
+      $comments = db('select comments.*,
+         users.username, users.email
+         from comments
+         inner join users
+         on comments.user_id = users.id
+         where comments.share_id = ?', [$share->id])->fetchAll();
+
+      return view($res, 'share.single', compact('share', 'others', 'likedUsers', 'comments'));
    }
 
    public function create($req, $res)
@@ -58,9 +65,7 @@ class ShareController
 
    public function save($req, $res)
    {
-      extract($req->getParams());
-      db('insert into shares set user_id = ?, cat_id = ?, title = ?, body = ?',
-         [auth('id'), $category, $title, $body]);
+      q()->saveShare($req);
       return $res->withRedirect('/');
    }
 
@@ -70,26 +75,17 @@ class ShareController
          return $res->withRedirect('/');
       }
 
-      $shareId = $args['id'];
+      q()->toggleLike($args['id']);
 
-      $key = [auth('id'), $shareId];
+      return $res->withJson(['id' => auth('id'), 'username' => auth('username'), 'email' => auth('email')]);
+   }
 
-      $isLiked = db('select * from share_like where user_id = ? and share_id = ?', $key)->fetch();
+   public function comments($req, $res)
+   {
+      extract($req->getParams());
 
-      if ($isLiked) {
-         db('delete from share_like where user_id = ? and share_id = ?', $key);
-      } else {
-         db('insert into share_like (user_id, share_id)
-               select ?, ?
-               from shares
-               where exists (
-                  select id
-                  from shares
-                  where id = ?)
-               limit 1',
-            [auth('id'), $shareId, $shareId]);
-      }
+      db('insert into comments set user_id = ?, share_id = ?, body = ?', [auth('id'), $share_id, $comment]);
 
-      return $res->withJson(['id' => auth('id'), 'email' => auth('email')]);
+      return back($res);
    }
 }

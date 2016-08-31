@@ -2,7 +2,7 @@
 
 {% block body %}
 <div class="row">
-   <div id="content" class="col-md-12">
+   <div id="content" class="col-md-10 col-md-offset-1{{ errors ? ' animated shake' : ''}}">
       <form action="/share" method="post" autocomplete="off">
          {{ csrf_field | raw }}
          <div class="panel panel-info">
@@ -73,7 +73,7 @@
       </form>
    </div>
 
-   <div id="preview" class="col-md-12 hide">
+   <div id="preview" class="col-md-10 col-md-offset-1">
       <div class="panel panel-default">
          <div class="panel-heading" style="font-size: 150%; text-align: center;">內容預覽</div>
          <div class="panel-body">

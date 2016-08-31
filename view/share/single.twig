@@ -26,13 +26,54 @@
                <div id="likedDetails">
                   {% if likedUsers %}
                      {% for user in likedUsers %}
-                         <span id="liked-by-{{user.id}}">{{ gravatar(30, user.email) | raw }}</span>
+                         <span style="display: inline-block;"
+                              data-placement="top" data-toggle="tooltip" title="{{ user.username }}"
+                              id="liked-by-{{user.id}}">
+                              {{ gravatar(30, user.email) | raw }}
+                        </span>
                      {% endfor %}
                   {% endif %}
                </div>
 
             </div> <!-- end panel body -->
          </div> <!-- end panel -->
+
+         <div class="panel panel-default">
+            <div class="panel-body">
+               <form action="/comments" method="post" autocomplete="off">
+                  {{ csrf_field | raw }}
+                  <input type="hidden" name="share_id" value="{{ share.id }}">
+                  <div class="form-group">
+                     <label class="form-label" for="comment">發表回應</label>
+                     <textarea class="form-control" name="comment" id="comment" rows="5" placeholder="支援 markdown">{{ auth.user.comment }}</textarea>
+                  </div> <!-- end desc -->
+
+                  <div class="t-right" style="margin-bottom: 15px;">
+                     <button class="btn btn-primary"><i class="fa fa-check mr-7"></i>確認</button>
+                  </div>
+               </form>
+            </div>
+         </div>
+
+         <div class="panel panel-default">
+            <div class="panel-heading">回應數量</div>
+            <div class="panel-body">
+               {% if comments %}
+                  {% for comment in comments %}
+                     <div class="media">
+                        <div class="media-left">
+                           <a>{{ gravatar(30, comment.email) | raw }}</a>
+                        </div>
+                        <div class="media-body">
+                           {{ comment.body }}
+                        </div>
+                     </div>
+                     {{ loop.last ? '' : '<hr>' }}
+                  {% endfor %}
+               {% endif %}
+
+            </div>
+         </div>
       </div> <!-- end col-9 -->
 
       <div class="col-md-3">
@@ -60,7 +101,8 @@
                <div class="panel-heading" style="text-align: center">作者的其他分享</div>
                <div class="panel-body">
                   {% for other in others %}
-                     <a style="font-size: 120%; display: block; padding-bottom: 5px;" class="share-title plink" href="/share/{{ other.id }}">
+                     <a style="font-size: 120%; display: block; padding-bottom: 5px;"
+                        class="share-title plink" href="/share/{{ other.id }}/{{ other.title | slug }}">
                         <i class="fa fa-caret-right mr-7" aria-hidden="true"></i>{{ other.title }}
                      </a>
                   {% endfor %}
@@ -76,6 +118,8 @@
          hljs.highlightBlock(block)
       })
 
+      $('[data-toggle="tooltip"]').tooltip()
+
       $('#likeButton > div').click(function(e){
          e.preventDefault()
          var btn = $(this)
@@ -86,10 +130,12 @@
                btn.removeClass('btn-default').addClass('btn-success')
                count++
                span.text(count)
-               var g = '<span style="display: none" id="liked-by-'+res.id+'">'+
+               var g = '<span style="display: none"'+
+                       ' data-placement="top" data-toggle="tooltip" title="'+res.username+'" id="liked-by-'+res.id+'">'+
                        '<img class="gravatar" src="https://www.gravatar.com/avatar/'+md5(res.email)+'?s=30&d=mm"></span>'
                $('#likedDetails').prepend(g)
-               $('#liked-by-'+res.id).fadeIn()
+               $('#liked-by-'+res.id).fadeIn().css('display', 'inline-block')
+               $('[data-toggle="tooltip"]').tooltip()
             } else {
                btn.removeClass('btn-success').addClass('btn-default')
                count--

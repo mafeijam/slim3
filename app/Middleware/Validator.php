@@ -12,11 +12,11 @@ class Validator
    protected $to;
    protected $errors = [];
 
-   public function __construct(array $rules, $customErrors = null, $to)
+   public function __construct(array $rules, $customErrors = null, $to = null)
    {
       $this->rules = $rules;
       $this->customErrors = $customErrors;
-      $this->to = $to;
+      $this->to = $to ?: back();
    }
 
    public function __invoke($req, $res, $next)

@@ -78,3 +78,7 @@ function prev_next($page, $pages) {
    $next = $page + 1 > $pages ? $pages : $page + 1;
    return [$prev, $next];
 }
+
+function back($res = null) {
+   return $res ? $res->withRedirect(back()) : $_SESSION['back_uri'];
+}

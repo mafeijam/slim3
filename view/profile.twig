@@ -13,7 +13,8 @@
             <div class="panel-body">
                {% if recents %}
                   {% for share in recents %}
-                     <a style="font-size: 120%; padding-right: 5px; display: block" class="share-title plink" href="/share/{{ share.id }}">{{ share.title }}</a>
+                     <a style="font-size: 120%; padding-right: 5px; display: block"
+                        class="share-title plink" href="/share/{{ share.id }}/{{ share.title | slug }}">{{ share.title }}</a>
                      <div style="margin-top: 10px;">
                         <small><i class="fa fa-tag mr-7"></i><span class="grey">{{ share.cat_name }}</span></small>
                         <small><i class="fa fa-eye mr-7"></i><span class="grey">{{ share.views }}</span></small>
@@ -33,7 +34,8 @@
             <div class="panel-body">
                {% if likes %}
                   {% for like in likes %}
-                     <a style="font-size: 120%; padding-right: 5px; display: block" class="share-title plink" href="/share/{{ like.id }}">
+                     <a style="font-size: 120%; padding-right: 5px; display: block"
+                        class="share-title plink" href="/share/{{ like.id }}/{{ like.title | slug }}">
                         {{ like.title }}
                      </a>
                   {% endfor %}
