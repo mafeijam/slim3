@@ -9,16 +9,14 @@
         "ircmaxell/random-lib": "^1.1",
         "nesbot/carbon": "^1.21",
         "aptoma/twig-markdown": "^2.0",
-        "michelf/php-markdown": "^1.6"
+        "michelf/php-markdown": "^1.6",
+        "symfony/var-dumper": "^3.1",
+        "filp/whoops": "^2.1"
     },
 
    "autoload": {
       "psr-4": {
          "App\\": "app/"
       }
-   },
-    "require-dev": {
-        "symfony/var-dumper": "^3.1",
-        "filp/whoops": "^2.1"
-    }
+   }
 }
