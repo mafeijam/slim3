@@ -14,7 +14,10 @@ use Carbon\Carbon;
 use Whoops\Run as Whoops;
 use Whoops\Handler\PrettyPageHandler;
 
-(new Dotenv(dirname(__DIR__)))->load();
+if (file_exists('../.env')) {
+   (new Dotenv(dirname(__DIR__)))->load();
+}
+
 Carbon::setLocale('zh-TW');
 
 $config = require 'config.php';
