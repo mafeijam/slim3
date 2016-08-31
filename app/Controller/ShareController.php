@@ -51,7 +51,8 @@ class ShareController
          from comments
          inner join users
          on comments.user_id = users.id
-         where comments.share_id = ?', [$share->id])->fetchAll();
+         where comments.share_id = ?
+         order by comments.created_at desc', [$share->id])->fetchAll();
 
       return view($res, 'share.single', compact('share', 'others', 'likedUsers', 'comments'));
    }

@@ -62,10 +62,15 @@
                   {% for comment in comments %}
                      <div class="media">
                         <div class="media-left">
-                           <a>{{ gravatar(30, comment.email) | raw }}</a>
+                           <a>{{ gravatar(35, comment.email) | raw }}</a>
                         </div>
                         <div class="media-body">
-                           {{ comment.body }}
+                           <div><span class="grey">{{ comment.username }}</span></div>
+                           <small>
+                              <span class="grey">#{{ loop.revindex }}</span>
+                              <i class="fa fa-clock-o mr-7"></i><span class="grey">{{ comment.created_at | diffForHumans }}</span>
+                           </small>
+                           <div>{{ comment.body }}</div>
                         </div>
                      </div>
                      {{ loop.last ? '' : '<hr>' }}
@@ -81,7 +86,7 @@
             <div class="panel-heading" style="text-align: center">作者</div>
             <div class="panel-body" style="text-align: center;">
                {{ gravatar(120, share.email) | raw }}
-               <div class="grey">{{ share.username }}</div>
+               <div style="margin-top: 10px;" class="grey">{{ share.username }}</div>
                {% if share.description %}
                   <div style="margin-top: 15px;">{{ share.description }}</div >
                {% endif %}

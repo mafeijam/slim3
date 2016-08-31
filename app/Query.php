@@ -9,7 +9,8 @@ class Query
       return db('select shares.*,
                   users.username, users.email,
                   categories.name as cat_name,
-                  count(share_like.share_id) as likes
+                  count(share_like.share_id) as likes,
+                  count(comments.share_id) as comments
                   from shares
                   inner join users
                   on users.id = shares.user_id
@@ -17,6 +18,8 @@ class Query
                   on categories.id = shares.cat_id
                   left join share_like
                   on share_like.share_id = shares.id
+                  left join comments
+                  on comments.share_id = shares.id
                   group by shares.id
                   order by shares.created_at desc
                   limit ?, ?', [$start, $perPage])->fetchAll();

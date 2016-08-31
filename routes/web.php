@@ -3,7 +3,6 @@
 $app->get('/', 'ShareController:index');
 
 $app->get('/active/{code}', 'AuthController:active');
-$app->get('/share/{id}[/{title}]', 'ShareController:show');
 
 $app->group('/', function(){
    $this->get('login', 'PageController:login');
@@ -31,6 +30,6 @@ $app->group('/', function(){
    $this->post('comments', 'ShareController:comments')->add('commentsValidator');
 })->add('guard');
 
-
+$app->get('/share/{id}[/{title}]', 'ShareController:show');
 
 //$app->get('/[{path:.*}]', 'AuthController:index');
