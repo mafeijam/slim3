@@ -13,25 +13,27 @@
 
             <div class="panel-body">
                {{ share.body | markdown }}
-            </div>
-            <hr>
-            <div id="likeButton">
-               {% set id = auth.check ? auth.user.id : 0 %}
-               <div style="margin-bottom: 10px;" data-url="/share/{{ share.id }}/like"
-                    class="btn {{ isLiked(id, share.id) ? 'btn-success' : 'btn-default' }}" {{ auth.check ? '' : 'disabled' }}>
-                  <i class="fa fa-thumbs-o-up fa-lg mr-7"></i>好野  (<span>{{ share.likes }}</span>)
-               </div>
-            </div>
+               <hr>
 
-            <div id="likedDetails">
-               {% if likedUsers %}
-                  {% for user in likedUsers %}
-                      <span id="liked-by-{{user.id}}">{{ gravatar(30, user.email) | raw }}</span>
-                  {% endfor %}
-               {% endif %}
-            </div>
-         </div>
-      </div>
+               <div id="likeButton">
+                  {% set id = auth.check ? auth.user.id : 0 %}
+                  <div style="margin-bottom: 10px;" data-url="/share/{{ share.id }}/like"
+                       class="btn {{ isLiked(id, share.id) ? 'btn-success' : 'btn-default' }}" {{ auth.check ? '' : 'disabled' }}>
+                     <i class="fa fa-thumbs-o-up fa-lg mr-7"></i>好野  (<span>{{ share.likes }}</span>)
+                  </div>
+               </div>
+
+               <div id="likedDetails">
+                  {% if likedUsers %}
+                     {% for user in likedUsers %}
+                         <span id="liked-by-{{user.id}}">{{ gravatar(30, user.email) | raw }}</span>
+                     {% endfor %}
+                  {% endif %}
+               </div>
+
+            </div> <!-- end panel body -->
+         </div> <!-- end panel -->
+      </div> <!-- end col-9 -->
 
       <div class="col-md-3">
          <div class="panel panel-info">
@@ -65,16 +67,15 @@
                </div>
             </div>
          {% endif %}
-
       </div>
 
-
-   </div>
+   </div> <!-- end row -->
    <script src="/js/md5.js"></script>
    <script>
       $('pre code').each(function(i, block) {
          hljs.highlightBlock(block)
       })
+
       $('#likeButton > div').click(function(e){
          e.preventDefault()
          var btn = $(this)

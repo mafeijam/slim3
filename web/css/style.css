@@ -67,6 +67,10 @@ code {
    padding: 0;
 }
 
+span .gravatar {
+  margin: 5px;
+}
+
 .mr-7 {
    margin-right: 7px;
 }
@@ -127,14 +131,11 @@ code {
 }
 
 #likeButton {
-  text-align: right;
-  padding-right: 15px;
+  text-align: center;
 }
 
 #likedDetails {
-  display: flex;
-  justify-content: center;
-  padding: 10px;
+  text-align: center;
 }
 
 #marked-preview {

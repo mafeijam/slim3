@@ -15,6 +15,10 @@ function db($query = null, $args = []) {
    return app('db');
 }
 
+function q() {
+   return app('query');
+}
+
 function view($res, $file, $data = []) {
    return app('view')->render($res, str_replace('.', DIRECTORY_SEPARATOR, $file).'.twig', $data);
 }
@@ -67,4 +71,10 @@ function flash($key, $value) {
 
 function is_page_refresh() {
    return isset($_SERVER['HTTP_CACHE_CONTROL']) && $_SERVER['HTTP_CACHE_CONTROL'] === 'max-age=0';
+}
+
+function prev_next($page, $pages) {
+   $prev = $page - 1 == 0 ? 1 : $page - 1;
+   $next = $page + 1 > $pages ? $pages : $page + 1;
+   return [$prev, $next];
 }

@@ -7,8 +7,8 @@
          {% include 'partial/user-profile.twig' %}
       </div>
 
-      <div class="col-md-8">
-         <div class="panel panel-default">
+      <div class="col-md-4 col-md-offset-1">
+         <div class="panel panel-default{{ errors ? ' animated shake' : ''}}">
             <div class="panel-heading">更改密碼</div>
             <div class="panel-body">
                <form action="/change-password" method="post" autocomplete="off">

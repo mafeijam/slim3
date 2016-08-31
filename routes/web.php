@@ -27,7 +27,7 @@ $app->group('/', function(){
    $this->post('reactive', 'AuthController:reactive');
    $this->get('share', 'ShareController:create')->add('isActive');
    $this->post('share', 'ShareController:save')->add('shareValidator');
-   $this->get('share/{id}/like', 'ShareController:like');
+   $this->get('share/{id}/like', 'ShareController:toggleLike');
 })->add('guard');
 
 

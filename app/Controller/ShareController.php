@@ -6,7 +6,7 @@ class ShareController
 {
    public function index($req, $res)
    {
-      $total = db('select count(id) as total from shares')->fetch()->total;
+      $total = q()->getTotalShares();
       $perPage = 2;
       $page = (int) $req->getQueryParam('p', 1);
       $pages = ceil($total/$perPage);
@@ -16,26 +16,11 @@ class ShareController
          return $res->withRedirect('/');
       }
 
-      $prev = $page - 1 == 0 ? 1 : $page - 1;
-      $next = $page + 1 > $pages ? $pages : $page + 1;
+      list($prev, $next) = prev_next($page, $pages);
 
-      $shares = db('select shares.*,
-                     users.username, users.email,
-                     categories.name as cat_name,
-                     count(share_like.share_id) as likes
-                     from shares
-                     inner join users
-                     on users.id = shares.user_id
-                     inner join categories
-                     on categories.id = shares.cat_id
-                     left join share_like
-                     on share_like.share_id = shares.id
-                     group by shares.id
-                     order by shares.created_at desc
-                     limit ?, ?', [$start, $perPage])
-            ->fetchAll();
+      $shares = q()->getAllSharesWithLikesCount($start, $perPage);
 
-      $hots = db('select * from shares order by views desc limit 5')->fetchAll();
+      $hots = q()->getHotShares();
 
       return view($res, 'home', compact('shares', 'hots', 'pages', 'page', 'prev', 'next'));
    }
@@ -44,34 +29,21 @@ class ShareController
    {
       $id = $args['id'];
 
-      $share = db('select shares.*,
-                  users.username, users.email, users.description, users.github,
-                  categories.name as cat_name,
-                  count(share_like.share_id) as likes,
-                  group_concat(share_like.user_id) as liked_users
-                  from shares
-                  inner join users
-                  on users.id = shares.user_id
-                  inner join categories
-                  on categories.id = shares.cat_id
-                  left join share_like
-                  on share_like.share_id = shares.id
-                  where shares.id = ?', [$id])->fetch();
+      $share = q()->getShareByIdWithIikedUsers($id);
 
       if ($share->id == null) {
          return view($res->withStatus(404), 'share.not-found');
       }
 
       if (is_page_refresh() == false && is_me($share->user_id) == false) {
-         db('update shares set views = views + 1 where id = ?', [$id]);
+         q()->shareViewsUp($id);
       }
 
-      $others = db('select * from shares where user_id = ? and id != ? order by created_at desc limit 3',
-                   [$share->user_id, $share->id])->fetchAll();
+      $others = q()->getOtherShares($share);
 
       $likedUsers = [];
       if ($share->liked_users) {
-         $likedUsers = db('select email, id from users where id in ('.$share->liked_users.')')->fetchAll();
+         $likedUsers = q()->getLikedUsers($share);
       }
 
       return view($res, 'share.single', compact('share', 'others', 'likedUsers'));
@@ -92,13 +64,15 @@ class ShareController
       return $res->withRedirect('/');
    }
 
-   public function like($req, $res, $args)
+   public function toggleLike($req, $res, $args)
    {
       if (!$req->isXhr()) {
          return $res->withRedirect('/');
       }
 
-      $key = [auth('id'), $args['id']];
+      $shareId = $args['id'];
+
+      $key = [auth('id'), $shareId];
 
       $isLiked = db('select * from share_like where user_id = ? and share_id = ?', $key)->fetch();
 
@@ -113,7 +87,7 @@ class ShareController
                   from shares
                   where id = ?)
                limit 1',
-            [auth('id'), $args['id'], $args['id']]);
+            [auth('id'), $shareId, $shareId]);
       }
 
       return $res->withJson(['id' => auth('id'), 'email' => auth('email')]);
