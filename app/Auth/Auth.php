@@ -25,7 +25,7 @@ class Auth
       }
    }
 
-   function login($username, $password, $remember)
+   public function login($username, $password, $remember)
    {
       extract($this->jwt);
       $user = db('select id, username, password from users where username = ?', [$username])->fetch();

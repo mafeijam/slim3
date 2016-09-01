@@ -21,8 +21,8 @@ class Guard
          return $next($req, $res);
       }
 
-      $_SESSION['intend'] = $req->getUri()->getPath();
-      $_SESSION['pjaxFullReload'] = true;
+      flash('intend', $req->getUri()->getPath());
+      flash('pjaxFullReload', true);
 
       return $res->withRedirect($this->to);
    }

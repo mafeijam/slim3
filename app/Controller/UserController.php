@@ -8,14 +8,12 @@ class UserController
    {
       $recents = db('select shares.*,
                      categories.name as cat_name,
-                     count(share_like.share_id) as likes
+                     (select count(*) from share_like where share_like.share_id = shares.id) as likes,
+                     (select count(*) from comments where comments.share_id = shares.id) as comments
                      from shares
                      inner join categories
                      on categories.id = shares.cat_id
-                     left join share_like
-                     on share_like.share_id = shares.id
                      where shares.user_id = ?
-                     group by shares.id
                      order by created_at desc limit 3', [auth('id')])->fetchAll();
 
       $hasLikedShares = db('select group_concat(share_id) as liked_shares from share_like where user_id = ?',

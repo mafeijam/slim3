@@ -22,7 +22,14 @@ class ShareController
 
       $hots = q()->getHotShares();
 
-      return view($res, 'home', compact('shares', 'hots', 'pages', 'page', 'prev', 'next'));
+      $mostActiveUsers = db('select username,
+         (select count(*) from shares where shares.user_id = users.id) as shares
+         from users
+         having shares > 0
+         order by shares desc
+         limit 5')->fetchAll();
+
+      return view($res, 'home', compact('shares', 'hots', 'mostActiveUsers', 'pages', 'page', 'prev', 'next'));
    }
 
    public function show($req, $res, $args)
@@ -72,10 +79,6 @@ class ShareController
 
    public function toggleLike($req, $res, $args)
    {
-      if (!$req->isXhr()) {
-         return $res->withRedirect('/');
-      }
-
       q()->toggleLike($args['id']);
 
       return $res->withJson(['id' => auth('id'), 'username' => auth('username'), 'email' => auth('email')]);

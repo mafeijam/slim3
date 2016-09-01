@@ -32,7 +32,7 @@ $container['loginValidator'] = function($c) {
 
    $customErrors = array_get($c['customErrors'], ['notEmpty']);
 
-   return new App\Middleware\Validator($rules, $customErrors);
+   return new App\Middleware\Validator($rules, $customErrors, 'login');
 };
 
 $container['registerValidator'] = function($c) {

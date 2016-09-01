@@ -11,3 +11,7 @@ $container['guard'] = function($c) {
 $container['isActive'] = function($c) {
    return new App\Middleware\IsActive($c['auth']->user()->active);
 };
+
+$container['ajaxOnly'] = function($c) {
+   return new App\Middleware\AjaxOnly;
+};

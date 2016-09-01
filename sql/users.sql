@@ -1,0 +1,20 @@
+CREATE TABLE `users` (
+ `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+ `username` varchar(255) CHARACTER SET utf8 NOT NULL,
+ `password` varchar(255) CHARACTER SET utf8 NOT NULL,
+ `email` varchar(255) CHARACTER SET utf8 NOT NULL,
+ `active` tinyint(4) NOT NULL DEFAULT '0',
+ `nickname` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+ `website` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+ `come_from` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+ `description` text CHARACTER SET utf8,
+ `github` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+ `active_code` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+ `last_login` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+ `joined_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `reset_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+ `reset_exp` timestamp NULL DEFAULT NULL,
+ PRIMARY KEY (`id`),
+ UNIQUE KEY `username` (`username`),
+ UNIQUE KEY `email` (`email`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci

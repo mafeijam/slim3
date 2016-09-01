@@ -1,6 +1,5 @@
 <?php
 
-use Carbon\Carbon;
 use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
 use Aptoma\Twig\Extension\MarkdownExtension;
@@ -18,6 +17,10 @@ $container['view'] = function($c) {
 
    $env = $view->getEnvironment();
 
+   $env->addGlobal('totalUsers', db('select count(id) as total from users')->fetch()->total);
+   $env->addGlobal('totalShares', db('select count(id) as total from shares')->fetch()->total);
+   $env->addGlobal('totalComments', db('select count(id) as total from comments')->fetch()->total);
+
    $env->addGlobal('auth', [
       'check' => auth()->check(),
       'user' => auth()->user()
@@ -28,13 +31,10 @@ $container['view'] = function($c) {
       $env->addFunction($function);
    }
 
-   $env->addFilter(new Twig_SimpleFilter('diffForHumans', function ($string) {
-      return Carbon::createFromTimestamp(strtotime($string))->diffForHumans();
-   }));
-
-   $env->addFilter(new Twig_SimpleFilter('slug', function ($string) {
-      return trim(str_replace(' ', '-', $string));
-   }));
+   $twigFilters = require 'twig-filter.php';
+   foreach ($twigFilters as $filter) {
+      $env->addFilter($filter);
+   }
 
    return $view;
 };

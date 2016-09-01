@@ -17,6 +17,11 @@ return [
       return db('select count(id) as count from shares where user_id = ?', [$id])->fetch()->count;
    }),
 
+   'commented' => new Twig_SimpleFunction('commented', function(){
+      $id = auth()->check() ? auth('id') : null;
+      return db('select count(id) as count from comments where user_id = ?', [$id])->fetch()->count;
+   }),
+
    'isDesktop' => new Twig_SimpleFunction('isDesktop', function() {
       return preg_match('/windows|win32/i', $_SERVER['HTTP_USER_AGENT']) ? true : false;
    }),

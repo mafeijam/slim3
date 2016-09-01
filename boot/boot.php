@@ -2,7 +2,7 @@
 
 session_start();
 
-require '../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 require 'helper.php';
 
 use App\App;
@@ -55,7 +55,7 @@ $container['query'] = function($c) {
 require 'global-middleware.php';
 
 $app->group('/api', function() use ($app){
-   require '../routes/api.php';
+   require __DIR__ . '/../routes/api.php';
 })->add(new JwtCheck($config['jwt']['key'], ['/api/users']));
 
-require '../routes/web.php';
+require __DIR__ . '/../routes/web.php';
