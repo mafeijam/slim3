@@ -29,22 +29,22 @@
                   {% endif %}
                </div>
 
-                  <div class="form-group">
-                     <label class="form-label" for="title">標題</label>
-                     <div class="input-group has-feedback {{ errors.title ? 'has-error' : ''}}">
-                        <span class="input-group-addon"><i class="fa fa-pencil w-30"></i></span>
-                        <input class="form-control" type="text" name="title" id="title" value="{{ old.title }}">
-                        {% if errors.title %}
-                           <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-                        {% endif %}
-                     </div>
+               <div class="form-group">
+                  <label class="form-label" for="title">標題</label>
+                  <div class="input-group has-feedback {{ errors.title ? 'has-error' : ''}}">
+                     <span class="input-group-addon"><i class="fa fa-pencil w-30"></i></span>
+                     <input class="form-control" type="text" name="title" id="title" value="{{ old.title }}">
                      {% if errors.title %}
-                        <span class="help-block">
-                           <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ errors.title | first }}
-                        </span>
+                        <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
                      {% endif %}
-
                   </div>
+                  {% if errors.title %}
+                     <span class="help-block">
+                        <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ errors.title | first }}
+                     </span>
+                  {% endif %}
+
+               </div>
 
                <div class="form-group">
                   <label class="form-label" for="body">
@@ -83,7 +83,7 @@
    </div>
 </div>
 
-<script src="/js/marked.min.js"></script>
-<script src="/js/form.js"></script>
-<script src="/js/share.js"></script>
+<script src="{{ base_url() }}/js/marked.min.js"></script>
+<script src="{{ base_url() }}/js/form.js"></script>
+<script src="{{ base_url() }}/js/share.js"></script>
 {% endblock %}

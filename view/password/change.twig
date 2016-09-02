@@ -1,4 +1,5 @@
 {% extends 'default.twig' %}
+{% import 'macro.twig' as m %}
 
 {% block body %}
    <div class="row">
@@ -13,50 +14,12 @@
             <div class="panel-body">
                <form action="/change-password" method="post" autocomplete="off">
                   {{ csrf_field | raw }}
-                  <div class="form-group">
-                     <label style="font-size: 110%; margin-bottom: 10px;" for="password">舊密碼</label>
-                     <div class="input-group has-feedback {{ errors.password ? 'has-error' : ''}}">
-                        <span class="input-group-addon"><i class="fa fa-lock w-30"></i></span>
-                        <input class="form-control" type="password" name="password" id="password">
-                        {% if errors.password %}
-                           <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-                        {% endif %}
-                     </div>
-                     {% if errors.password %}
-                        {% set message = errors.password %}
-                        {% include 'partial/help-block.twig' with message %}
-                     {% endif %}
-                  </div>
 
-                  <div class="form-group">
-                     <label style="font-size: 110%; margin-bottom: 10px;" for="new_password">新密碼</label>
-                     <div class="input-group has-feedback {{ errors.new_password ? 'has-error' : ''}}">
-                        <span class="input-group-addon"><i class="fa fa-key w-30"></i></span>
-                        <input class="form-control" type="password" name="new_password" id="new_password">
-                        {% if errors.new_password %}
-                           <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-                        {% endif %}
-                     </div>
-                     {% if errors.new_password %}
-                        {% set message = errors.new_password %}
-                        {% include 'partial/help-block.twig' with message %}
-                     {% endif %}
-                  </div>
+                  {{ m.formGroup(errors.password, '舊密碼', 'lock', 'password', '', 'password') }}
 
-                  <div class="form-group">
-                     <label style="font-size: 110%; margin-bottom: 10px;" for="password_cfm">新密碼確認</label>
-                     <div class="input-group has-feedback {{ errors.password_cfm ? 'has-error' : ''}}">
-                        <span class="input-group-addon"><i class="fa fa-key w-30"></i></span>
-                        <input class="form-control" type="password" name="password_cfm" id="password_cfm">
-                        {% if errors.password_cfm %}
-                           <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-                        {% endif %}
-                     </div>
-                     {% if errors.password_cfm %}
-                        {% set message = errors.password_cfm %}
-                        {% include 'partial/help-block.twig' with message %}
-                     {% endif %}
-                  </div>
+                  {{ m.formGroup(errors.new_password, '新密碼', 'key', 'new_password', '', 'password') }}
+
+                  {{ m.formGroup(errors.password_cfm, '新密碼確認', 'key', 'password_cfm', '', 'password') }}
 
                   <div class="t-right">
                      <button class="btn btn-primary"><i class="fa fa-check mr-7"></i>確認</button>
@@ -64,9 +27,12 @@
                </form>
             </div>
          </div>
+         {% if errors.bottom %}
+            {% include 'partial/errors-bottom.twig' with errors %}
+         {% endif %}
       </div>
 
    </div>
-   <script src="/js/form.js"></script>
+   <script src="{{ base_url() }}/js/form.js"></script>
 
 {% endblock %}

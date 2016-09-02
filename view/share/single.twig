@@ -81,7 +81,7 @@
          </div>
       </div> <!-- end col-9 -->
 
-      <div class="col-md-3">
+      <div class="col-md-3" id="sticky">
          <div class="panel panel-info">
             <div class="panel-heading" style="text-align: center">作者</div>
             <div class="panel-body" style="text-align: center;">
@@ -159,5 +159,9 @@
             $('button').attr('disabled', true)
          }
       })
+
+   $('#sticky').stick_in_parent({
+      'offset_top': 70
+   })
    </script>
 {% endblock %}

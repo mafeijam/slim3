@@ -3,78 +3,9 @@
 {% block body %}
    <div class="row">
       <div class="col-md-8">
-         <div class="panel panel-default">
-            <div class="panel-body">
-               {% for share in shares %}
-                  <div class="media">
-                     <div class="media-left">
-                        <a>{{ gravatar(50, share.email) | raw }}</a>
-                     </div>
-                     <div class="media-body">
-                        <h4 class="media-heading">
-                           <a class="share-title plink" href="/share/{{ share.id }}/{{ share.title | slug }}">{{ share.title }}</a>
-                        </h4>
-                        <small><i class="fa fa-user mr-7"></i><span class="grey">{{ share.username }}</span></small>
-                        <small><i class="fa fa-tag mr-7"></i><span class="grey">{{ share.cat_name }}</span></small>
-                        <small><i class="fa fa-eye mr-7"></i><span class="grey">{{ share.views }}</span></small>
-                        <small><i class="fa fa-thumbs-o-up mr-7"></i><span class="grey">{{ share.likes }}</span></small>
-                        <small><i class="fa fa-comments-o mr-7"></i><span class="grey">{{ share.comments }}</span></small>
-                        <small><i class="fa fa-clock-o mr-7"></i><span class="grey">{{ share.created_at | diffForHumans }}</span></small>
-                     </div>
-                  </div>
-                  {{ loop.last ? '' : '<hr>' }}
-               {% else %}
-                  未有任何分享
-               {% endfor %}
-            </div>
-         </div>
-
-         <div>
-            {% if pages > 1 %}
-               {% include 'partial/pagination.twig' with [pages, page, prev, next] %}
-            {% endif %}
-         </div>
+         {% include 'partial/home/main.twig' with shares %}
+         {% include 'partial/pagination.twig' with [pages, page, prev, next] %}
       </div>
-
-      <div class="col-md-4" id="sticky">
-         <div class="panel panel-default">
-            <div class="panel-body" style="text-align: center">
-               <a href="/share" class="btn btn-info btn-lg plink"><i class="fa fa-share mr-7"></i> 發表分享</a>
-            </div>
-         </div>
-
-         <div class="panel panel-success" style="text-align: center">
-            <div class="panel-heading">活躍會員</div>
-            <div class="panel-body">
-               {% for user in mostActiveUsers %}
-                  <div>
-                     {{ user.username }} <small><span class="grey"> - {{ user.shares }} 則分享</span></small>
-                  </div>
-               {% else %}
-                  沒有資料
-               {% endfor %}
-            </div>
-         </div>
-
-         <div class="panel panel-danger">
-            <div class="panel-heading" style="text-align: center">熱門分享</div>
-            <div class="panel-body">
-               {% for hot in hots %}
-                  <a style="font-size: 120%; display: block" class="share-title plink" href="/share/{{ hot.id }}/{{ hot.title | slug }}">
-                     <i class="fa fa-caret-right mr-7" aria-hidden="true"></i>{{ hot.title }}
-                  </a>
-               {% endfor %}
-            </div>
-         </div>
-
-         <div class="panel panel-warning" style="text-align: center">
-            <div class="panel-heading">好站連結</div>
-            <div class="panel-body">
-               <p>股票@ <a href="http://quotes.jamwong.me" target="_blank">quotes.jamwong.me</a></p>
-               <p>BLOG@ <a href="http://blog.jamwong.me" target="_blank">blog.jamwong.me</a></p>
-            </div>
-         </div>
-
-      </div>
+      {% include 'partial/home/sidebar.twig' with [mostActiveUsers, hots] %}
    </div>
 {% endblock %}

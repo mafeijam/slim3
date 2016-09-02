@@ -21,7 +21,7 @@ class PasswordController
          return $res->withRedirect('profile');
       }
 
-      flash('errors', ['message' => '舊密碼錯誤']);
+      flash('errors', ['bottom' => '舊密碼錯誤']);
 
       return $res->withRedirect('change-password');
    }

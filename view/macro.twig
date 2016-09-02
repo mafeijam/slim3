@@ -1,0 +1,15 @@
+{% macro formGroup(errors, label, addon, name, value, type) %}
+   <div class="form-group">
+      <label class="form-label" for="{{ name }}">{{ label }}</label>
+      <div class="input-group has-feedback {{ errors ? 'has-error' : ''}}">
+         <span class="input-group-addon"><i class="fa fa-{{ addon }} w-30"></i></span>
+         <input class="form-control" type="{{ type|default('text') }}" name="{{ name }}" id="{{ name }}" value="{{ value }}">
+         {% if errors %}
+            <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+         {% endif %}
+      </div>
+      {% if errors %}
+         {% include 'partial/help-block.twig' with errors %}
+      {% endif %}
+   </div>
+{% endmacro %}
