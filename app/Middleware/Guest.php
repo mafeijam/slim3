@@ -16,9 +16,10 @@ class Guest
    public function __invoke($req, $res, $next)
    {
       if ($this->auth->check()) {
+         unset($_SESSION['intend']);
          return $res->withRedirect('/');
       }
-      unset($_SESSION['intend']);
+
       return $next($req, $res);
    }
 }
