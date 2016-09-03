@@ -18,7 +18,7 @@ class Guest
       if ($this->auth->check()) {
          return $res->withRedirect('/');
       }
-
+      unset($_SESSION['intend']);
       return $next($req, $res);
    }
 }

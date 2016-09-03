@@ -11,42 +11,44 @@
          <div class="panel panel-default">
             <div class="panel-heading">最近發表</div>
             <div class="panel-body">
-               {% if recents %}
-                  {% for share in recents %}
-                     <a style="font-size: 120%; padding-right: 5px; display: block"
-                        class="share-title plink" href="/share/{{ share.id }}/{{ share.title | slug }}">{{ share.title }}</a>
-                     <div style="margin-top: 10px;">
-                        <small><i class="fa fa-tag mr-7"></i><span class="grey">{{ share.cat_name }}</span></small>
-                        <small><i class="fa fa-eye mr-7"></i><span class="grey">{{ share.views }}</span></small>
-                        <small><i class="fa fa-thumbs-o-up mr-7"></i><span class="grey">{{ share.likes }}</span></small>
-                        <small><i class="fa fa-comments-o mr-7"></i><span class="grey">{{ share.comments }}</span></small>
-                        <small><i class="fa fa-clock-o mr-7"></i><span class="grey">{{ share.created_at | diffForHumans }}</span></small>
-                     </div>
-                     {{ loop.last ? '' : '<hr>' }}
-                  {% endfor %}
+               {% for share in recents %}
+                  <a style="font-size: 120%; padding-right: 5px; display: block"
+                     class="share-title plink" href="/share/{{ share.id }}/{{ share.title | slug }}">{{ share.title }}</a>
+                  <div style="margin-top: 10px;">
+                     <small><i class="fa fa-tag mr-7"></i><span class="grey">{{ share.cat_name }}</span></small>
+                     <small><i class="fa fa-eye mr-7"></i><span class="grey">{{ share.views }}</span></small>
+                     <small><i class="fa fa-thumbs-o-up mr-7"></i><span class="grey">{{ share.likes }}</span></small>
+                     <small><i class="fa fa-comments-o mr-7"></i><span class="grey">{{ share.comments }}</span></small>
+                     <small>
+                        <i class="fa fa-clock-o mr-7"></i>
+                        <span data-placement="right" data-toggle="tooltip" title="{{ share.created_at }}"
+                              style="cursor: help;" class="grey">{{ share.created_at | diffForHumans }}</span>
+                     </small>
+                  </div>
+                  {{ loop.last ? '' : '<hr>' }}
                {% else %}
                   沒有任何分享
-               {% endif %}
+               {% endfor %}
             </div>
          </div>
 
          <div class="panel panel-default">
            <div class="panel-heading">我的收藏</div>
             <div class="panel-body">
-               {% if likes %}
-                  {% for like in likes %}
-                     <a style="font-size: 120%; padding-right: 5px; display: block"
-                        class="share-title plink" href="/share/{{ like.id }}/{{ like.title | slug }}">
-                        {{ like.title }}
-                     </a>
-                  {% endfor %}
+               {% for like in likes %}
+                  <a style="font-size: 120%; padding-right: 5px; display: block"
+                     class="share-title plink" href="/share/{{ like.id }}/{{ like.title | slug }}">
+                     <i class="fa fa-caret-right mr-7"></i>{{ like.title }}
+                  </a>
                {% else %}
                    沒有任何收藏
-               {% endif %}
+               {% endfor %}
             </div>
          </div>
-      </div>
+      </div> <!-- end col -->
 
-   </div>
-
+   </div> <!--end row -->
+   <script>
+      $('[data-toggle="tooltip"]').tooltip()
+   </script>
 {% endblock %}

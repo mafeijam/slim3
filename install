@@ -1,0 +1,24 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
+if (file_exists('.env')) {
+   (new Dotenv\Dotenv(__DIR__))->load();
+}
+
+$config = require __DIR__ . '/boot/config.php';
+
+$app = new App\App($config);
+
+$container = $app->getContainer();
+require __DIR__ . '/boot/setup-db.php';
+
+if (isset($argv[1])) {
+   db()->exec('use ' . $argv[1]);
+}
+
+foreach (glob(__DIR__ . '/sql/*.sql') as $sql) {
+   echo 'installing table ' . basename($sql, '.sql') . PHP_EOL;
+   db()->exec(file_get_contents($sql));
+}

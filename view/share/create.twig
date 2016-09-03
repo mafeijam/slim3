@@ -1,4 +1,5 @@
 {% extends 'default.twig' %}
+{% import 'macro.twig' as m %}
 
 {% block body %}
 <div class="row">
@@ -29,22 +30,7 @@
                   {% endif %}
                </div>
 
-               <div class="form-group">
-                  <label class="form-label" for="title">標題</label>
-                  <div class="input-group has-feedback {{ errors.title ? 'has-error' : ''}}">
-                     <span class="input-group-addon"><i class="fa fa-pencil w-30"></i></span>
-                     <input class="form-control" type="text" name="title" id="title" value="{{ old.title }}">
-                     {% if errors.title %}
-                        <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-                     {% endif %}
-                  </div>
-                  {% if errors.title %}
-                     <span class="help-block">
-                        <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ errors.title | first }}
-                     </span>
-                  {% endif %}
-
-               </div>
+               {{ m.formGroup(errors.title, '標題', 'pencil', 'title', old.title) }}
 
                <div class="form-group">
                   <label class="form-label" for="body">
@@ -56,7 +42,7 @@
                      </a>
                   </label>
 
-                  <textarea id="marked" class="form-control {{ errors.body ? 'textarea-error' : ''}}" name="body" id="body" rows="13"></textarea>
+                  <textarea id="marked" class="form-control {{ errors.body ? 'textarea-error' : ''}}" name="body" id="body" rows="13">{{ old.body }}</textarea>
                </div>
                {% if errors.body %}
                   <span class="help-block">
@@ -85,5 +71,55 @@
 
 <script src="{{ base_url() }}/js/marked.min.js"></script>
 <script src="{{ base_url() }}/js/form.js"></script>
-<script src="{{ base_url() }}/js/share.js"></script>
+<script>
+   $('[data-toggle="tooltip"]').tooltip()
+
+   $('#marked').keyup(function(){
+      var m = marked($('#marked').val());
+      $('#marked-preview').html(m)
+      $('pre code').each(function(i, block) {
+         hljs.highlightBlock(block)
+      })
+   })
+
+   $('#marked').keyup()
+
+   $('#show').click(function(){
+      $('#preview').toggleClass('hide')
+   })
+
+   $('body').on('keydown', 'textarea', function(e) {
+      $(this).removeClass('textarea-error')
+      $(this).parent().next('span').fadeOut(300)
+
+      var keyCode = e.keyCode || e.which
+
+      if (keyCode === 9) {
+         e.preventDefault()
+         var start = this.selectionStart
+         var end = this.selectionEnd
+         var val = this.value
+         var selected = val.substring(start, end)
+         var re = /^/gm
+         var count = selected.match(re).length
+
+         if (selected) {
+            this.value = val.substring(0, start) + selected.replace(re, '\t') + val.substring(end)
+            this.selectionStart = start
+            this.selectionEnd = end + count
+         } else {
+            this.value += '    '
+         }
+      }
+   })
+
+   $('select').change(function(){
+      if ($(this).val().trim()) {
+         $(this).parent().removeClass('has-error')
+         $(this).next().fadeOut(300)
+         $(this).parent().next().fadeOut(300)
+      }
+   })
+
+</script>
 {% endblock %}

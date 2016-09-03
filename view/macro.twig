@@ -8,8 +8,16 @@
             <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
          {% endif %}
       </div>
-      {% if errors %}
-         {% include 'partial/help-block.twig' with errors %}
-      {% endif %}
+      {% include 'partial/help-block.twig' with [errors] %}
+   </div>
+{% endmacro %}
+
+{% macro input(label, addon, name, value, type) %}
+   <div class="form-group">
+      <label class="form-label" for="{{ name }}">{{ label }}</label>
+      <div class="input-group">
+         <span class="input-group-addon"><i class="fa fa-{{ addon }} w-30"></i></span>
+         <input class="form-control" type="{{ type|default('text') }}" name="{{ name }}" id="{{ name }}" value="{{ value }}">
+      </div>
    </div>
 {% endmacro %}

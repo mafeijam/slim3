@@ -1,3 +1,5 @@
-<span class="help-block">
-   <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ errors | first }}
-</span>
+{% if errors %}
+   <span class="help-block">
+      <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ errors | first }}
+   </span>
+{% endif %}

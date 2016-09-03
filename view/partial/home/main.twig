@@ -3,7 +3,7 @@
       {% for share in shares %}
          <div class="media">
             <div class="media-left">
-               <a>{{ gravatar(50, share.email) | raw }}</a>
+               <a>{{ gravatar(45, share.email) | raw }}</a>
             </div>
             <div class="media-body">
                <h4 class="media-heading">
@@ -14,7 +14,10 @@
                <small><i class="fa fa-eye mr-7"></i><span class="grey">{{ share.views }}</span></small>
                <small><i class="fa fa-thumbs-o-up mr-7"></i><span class="grey">{{ share.likes }}</span></small>
                <small><i class="fa fa-comments-o mr-7"></i><span class="grey">{{ share.comments }}</span></small>
-               <small><i class="fa fa-clock-o mr-7"></i><span class="grey">{{ share.created_at | diffForHumans }}</span></small>
+               <small>
+                  <i class="fa fa-clock-o mr-7"></i>
+                  <span data-placement="right" data-toggle="tooltip" title="{{ share.created_at }}"
+                        style="cursor: help;" class="grey">{{ share.created_at | diffForHumans }}</span></small>
             </div>
          </div>
          {{ loop.last ? '' : '<hr>' }}
@@ -23,3 +26,6 @@
       {% endfor %}
    </div>
 </div>
+<script>
+   $('[data-toggle="tooltip"]').tooltip()
+</script>

@@ -1,0 +1,32 @@
+<div class="panel panel-info">
+   <div class="panel-heading" style="text-align: center">作者</div>
+   <div class="panel-body" style="text-align: center;">
+      {{ gravatar(120, share.email) | raw }}
+      <div style="margin-top: 10px;" class="grey">{{ share.username }}</div>
+      {% if share.description %}
+         <div style="margin-top: 15px;">{{ share.description }}</div >
+      {% endif %}
+
+      {% if share.github %}
+         <div id="github-link" style="margin-top: 15px;">
+            <a href="https://github.com/{{ share.github }}" target="_blank">
+               <i class="fa fa-github mr-7"></i>Github
+            </a>
+         </div>
+      {% endif %}
+   </div>
+</div>
+
+{% if others %}
+   <div class="panel panel-success">
+      <div class="panel-heading" style="text-align: center">作者的其他分享</div>
+      <div class="panel-body">
+         {% for other in others %}
+            <a style="font-size: 120%; display: block; padding-bottom: 5px;"
+               class="share-title plink" href="/share/{{ other.id }}/{{ other.title | slug }}">
+               <i class="fa fa-caret-right mr-7" aria-hidden="true"></i>{{ other.title }}
+            </a>
+         {% endfor %}
+      </div>
+   </div>
+{% endif %}

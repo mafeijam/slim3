@@ -3,7 +3,6 @@
 session_start();
 
 require __DIR__ . '/../vendor/autoload.php';
-require 'helper.php';
 
 use App\App;
 use App\Query;

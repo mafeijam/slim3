@@ -3,127 +3,25 @@
 {% block body %}
    <div class="row">
       <div class="col-md-9">
-         <div class="panel panel-default">
-            <div class="panel-heading" style="padding-bottom: 20px;">
-               <div style="font-size: 200%; padding-bottom: 10px;">{{ share.title }}</div class="share-title">
-               <small><i class="fa fa-tag mr-7"></i><span class="grey">{{ share.cat_name }}</span></small>
-               <small><i class="fa fa-eye mr-7"></i><span class="grey">{{ share.views }}</span></small>
-               <small><i class="fa fa-clock-o mr-7"></i><span class="grey">{{ share.created_at | diffForHumans }}</span></small>
-            </div>
+         {% include 'partial/share/main.twig' with [share, likedUsers] %}
 
-            <div class="panel-body">
-               {{ share.body | markdown }}
-               <hr>
-
-               <div id="likeButton">
-                  {% set id = auth.check ? auth.user.id : 0 %}
-                  <div style="margin-bottom: 10px;" data-url="/share/{{ share.id }}/like"
-                       class="btn {{ isLiked(id, share.id) ? 'btn-success' : 'btn-default' }}" {{ auth.check ? '' : 'disabled' }}>
-                     <i class="fa fa-thumbs-o-up fa-lg mr-7"></i>好野  (<span>{{ share.likes }}</span>)
-                  </div>
-               </div>
-
-               <div id="likedDetails">
-                  {% if likedUsers %}
-                     {% for user in likedUsers %}
-                         <span style="display: inline-block;"
-                              data-placement="top" data-toggle="tooltip" title="{{ user.username }}"
-                              id="liked-by-{{user.id}}">
-                              {{ gravatar(30, user.email) | raw }}
-                        </span>
-                     {% endfor %}
-                  {% endif %}
-               </div>
-
-            </div> <!-- end panel body -->
-         </div> <!-- end panel -->
-
-         <div class="panel panel-default">
-            <div class="panel-body">
-               <form action="/comments" method="post" autocomplete="off">
-                  {{ csrf_field | raw }}
-                  <input type="hidden" name="share_id" value="{{ share.id }}">
-                  <div class="form-group">
-                     <label class="form-label" for="comment">發表回應</label>
-                     <textarea class="form-control" name="comment" id="comment" {{ auth.check ? '' : 'disabled style="cursor: not-allowed"' }}
-                               rows="5" placeholder="{{ auth.check ? '支援 markdown' : '登入後才可回應' }}">{{ auth.user.comment }}</textarea>
-                  </div> <!-- end desc -->
-
-                  <div class="t-right" style="margin-bottom: 15px;">
-                     <button {{ auth.check ? '' : 'disabled' }} class="btn btn-primary" disabled><i class="fa fa-check mr-7"></i>確認</button>
-                  </div>
-               </form>
-            </div>
-         </div>
-
-         <div class="panel panel-default">
-            <div class="panel-heading">回應</div>
-            <div class="panel-body">
-               {% for comment in comments %}
-                  <div class="media">
-                     <div class="media-left">
-                        <a>{{ gravatar(38, comment.email) | raw }}</a>
-                     </div>
-                     <div class="media-body">
-                        <div><span class="grey">{{ comment.username }}</span></div>
-                        <small>
-                           <span class="grey">#{{ loop.revindex }}</span>
-                           <i class="fa fa-clock-o mr-7"></i><span class="grey">{{ comment.created_at | diffForHumans }}</span>
-                        </small>
-                        <div style="margin-top: 10px; font-size: 110%;">{{ comment.body }}</div>
-                     </div>
-                  </div>
-                  {{ loop.last ? '' : '<hr>' }}
-               {% else %}
-                  沒有回應
-               {% endfor %}
-            </div>
-         </div>
+         {% include 'partial/share/comments.twig' with [share, comments] %}
       </div> <!-- end col-9 -->
-
       <div class="col-md-3" id="sticky">
-         <div class="panel panel-info">
-            <div class="panel-heading" style="text-align: center">作者</div>
-            <div class="panel-body" style="text-align: center;">
-               {{ gravatar(120, share.email) | raw }}
-               <div style="margin-top: 10px;" class="grey">{{ share.username }}</div>
-               {% if share.description %}
-                  <div style="margin-top: 15px;">{{ share.description }}</div >
-               {% endif %}
-
-               {% if share.github %}
-                  <div id="github-link" style="margin-top: 15px;">
-                     <a href="https://github.com/{{ share.github }}" target="_blank">
-                        <i class="fa fa-github mr-7"></i>Github
-                     </a>
-                  </div>
-               {% endif %}
-            </div>
-         </div>
-
-         {% if others %}
-            <div class="panel panel-success">
-               <div class="panel-heading" style="text-align: center">作者的其他分享</div>
-               <div class="panel-body">
-                  {% for other in others %}
-                     <a style="font-size: 120%; display: block; padding-bottom: 5px;"
-                        class="share-title plink" href="/share/{{ other.id }}/{{ other.title | slug }}">
-                        <i class="fa fa-caret-right mr-7" aria-hidden="true"></i>{{ other.title }}
-                     </a>
-                  {% endfor %}
-               </div>
-            </div>
-         {% endif %}
+         {% include 'partial/share/sidebar.twig' with [share, others] %}
       </div>
-
    </div> <!-- end row -->
-   <script src="/js/md5.js"></script>
+   <script src="{{ base_url() }}/js/md5.js"></script>
    <script>
+      $('[data-toggle="tooltip"]').tooltip()
+
       $('pre code').each(function(i, block) {
          hljs.highlightBlock(block)
       })
 
-      $('[data-toggle="tooltip"]').tooltip()
+      $('#sticky').stick_in_parent({
+         'offset_top': 70
+      })
 
       $('#likeButton > div').click(function(e){
          e.preventDefault()
@@ -154,14 +52,10 @@
 
       $('textarea').keyup(function(){
          if ($(this).val().trim()) {
-            $('button').attr('disabled', false)
+            $('button').show()
          } else {
-            $('button').attr('disabled', true)
+            $('button').hide()
          }
       })
-
-   $('#sticky').stick_in_parent({
-      'offset_top': 70
-   })
    </script>
 {% endblock %}

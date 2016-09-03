@@ -10,7 +10,3 @@ $('body').on('click', 'button', function(){
 })
 
 $('[data-toggle="tooltip"]').tooltip()
-
-$('#sticky').stick_in_parent({
-   'offset_top': 70
-})

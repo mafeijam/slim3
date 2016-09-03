@@ -1,4 +1,5 @@
 {% extends 'default.twig' %}
+{% import 'macro.twig' as m %}
 
 {% block body %}
    <div class="row">
@@ -8,31 +9,14 @@
             <div class="panel-heading" style="font-size: 150%; text-align: center;">忘記密碼</div>
 
             <div class="panel-body">
-
                <form action="/forget" method="post" autocomplete="off">
                   {{ csrf_field | raw }}
 
-                  <div class="form-group">
-                     <label class="form-label" for="email">電郵</label>
-                     <div class="input-group has-feedback {{ errors.email ? 'has-error' : ''}}">
-                        <span class="input-group-addon"><i class="fa fa-envelope-o w-30"></i></span>
-                        <input class="form-control" type="text" name="email" id="email" value="{{ old.email }}">
-                        {% if errors.email %}
-                           <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-                        {% endif %}
-                     </div>
-                     {% if errors.email %}
-                        <span class="help-block">
-                           <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ errors.email | first }}
-                        </span>
-                     {% endif %}
-
-                  </div>
+                  {{ m.formGroup(errors.email, '電郵', 'envelope-o', 'email', old.email) }}
 
                   <div class="t-right">
                      <button class="btn btn-primary"><i class="fa fa-paper-plane mr-7"></i>發送重設密碼連結</button>
                   </div>
-
                </form>
             </div> <!-- end panel body -->
          </div> <!-- end panel -->

@@ -7,12 +7,12 @@ class ShareController
    public function index($req, $res)
    {
       $total = q()->getTotalShares();
-      $perPage = 2;
+      $perPage = 20;
       $page = (int) $req->getQueryParam('p', 1);
       $pages = ceil($total/$perPage);
       $start = ($page - 1) * $perPage;
 
-      if ($page < 1 || $page > $pages) {
+      if ($page < 1 || $total > 0 && $page > $pages) {
          return $res->withRedirect('/');
       }
 

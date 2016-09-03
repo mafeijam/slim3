@@ -2,10 +2,17 @@
 
 {% block body %}
    <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-9">
          {% include 'partial/home/main.twig' with shares %}
          {% include 'partial/pagination.twig' with [pages, page, prev, next] %}
       </div>
-      {% include 'partial/home/sidebar.twig' with [mostActiveUsers, hots] %}
+      <div class="col-md-3" id="sticky">
+         {% include 'partial/home/sidebar.twig' with [mostActiveUsers, hots] %}
+      </div>
    </div>
+   <script>
+      $('#sticky').stick_in_parent({
+         'offset_top': 70
+      })
+   </script>
 {% endblock %}

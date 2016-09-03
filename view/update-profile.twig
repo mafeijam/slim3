@@ -1,4 +1,5 @@
 {% extends 'default.twig' %}
+{% import 'macro.twig' as m %}
 
 {% block body %}
    <div class="row">
@@ -22,63 +23,20 @@
                      </div>
                   </div> <!-- end username -->
 
-                  <div class="form-group">
-                     <label class="form-label" for="email">電郵</label>
-                     <div class="input-group has-feedback {{ errors.email ? 'has-error' : ''}}">
-                        <span class="input-group-addon"><i class="fa fa-envelope-o w-30"></i></span>
-                        <input class="form-control" type="text" name="email" id="email"
-                               value="{{ errors.email ? old.email : auth.user.email }}">
-                        {% if errors.email %}
-                           <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-                        {% endif %}
-                     </div>
-                     {% if errors.email %}
-                        {% set message = errors.email %}
-                        {% include 'partial/help-block.twig' with message %}
-                     {% endif %}
-                  </div> <!-- end email -->
+                  {% set value = errors.email ? old.email : auth.user.email %}
+                  {{ m.formGroup(errors.email, '電郵', 'envelope-o', 'email', value) }}
 
-                  <div class="form-group">
-                     <label class="form-label" for="nickname">別名</label>
-                     <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-user-secret w-30"></i></span>
-                        <input class="form-control" type="text" name="nickname" id="nickname" value="{{ auth.user.nickname }}">
-                     </div>
-                  </div><!-- end nickname -->
+                  {% set value = errors ? old.nickname : auth.user.nickname %}
+                  {{ m.input('別名', 'user-secret', 'nickname', value) }}
 
-                  <div class="form-group">
-                     <label class="form-label" for="website">個人網站</label>
-                     <div class="input-group has-feedback {{ errors.website ? 'has-error' : ''}}">
-                        <span class="input-group-addon"><i class="fa fa-globe w-30"></i></span>
-                        <input class="form-control" type="text" name="website" id="website"
-                               value="{{ errors.website ? old.website : auth.user.website }}">
-                        {% if errors.website %}
-                           <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-                        {% endif %}
-                     </div>
-                     {% if errors.website %}
-                        {% set message = errors.website %}
-                        {% include 'partial/help-block.twig' with message %}
-                     {% endif %}
-                  </div> <!-- end website -->
+                  {% set value = errors.website ? old.website : auth.user.website %}
+                  {{ m.formGroup(errors.website, '個人網站', 'envelope-o', 'website', value) }}
 
-                  <div class="form-group">
-                     <label class="form-label" for="come_from">來自</label>
-                     <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-map-marker w-30"></i></span>
-                        <input class="form-control" type="text" name="come_from" id="come_from"
-                               value="{{ errors.come_from ? old.come_from : auth.user.come_from }}">
-                     </div>
-                  </div> <!-- end come from -->
+                  {% set value = errors ? old.come_from : auth.user.come_from %}
+                  {{ m.input('來自', 'map-marker', 'come_from', value) }}
 
-                  <div class="form-group">
-                     <label class="form-label" for="github">Github</label>
-                     <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-github w-30"></i></span>
-                        <input class="form-control" type="text" name="github" id="github"
-                               value="{{ errors.github ? old.github : auth.user.github }}">
-                     </div>
-                  </div> <!-- end come from -->
+                  {% set value = errors ? old.github : auth.user.github %}
+                  {{ m.input('Github', 'github', 'github', value) }}
 
                   <div class="form-group">
                      <label class="form-label" for="description">簡介</label>
