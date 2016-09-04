@@ -71,6 +71,11 @@ span .gravatar {
   margin: 5px;
 }
 
+#last-reply .gravatar {
+  vertical-align: bottom;
+  margin-bottom: 0;
+}
+
 .mr-7 {
    margin-right: 7px;
 }

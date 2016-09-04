@@ -18,16 +18,11 @@ class ShareController
 
       list($prev, $next) = prev_next($page, $pages);
 
-      $shares = q()->getAllSharesWithLikesCount($start, $perPage);
+      $shares = q()->getAllShares($start, $perPage);
 
       $hots = q()->getHotShares();
 
-      $mostActiveUsers = db('select username,
-         (select count(*) from shares where shares.user_id = users.id) as shares
-         from users
-         having shares > 0
-         order by shares desc
-         limit 5')->fetchAll();
+      $mostActiveUsers = q()->getMostActiveUsers();
 
       return view($res, 'home', compact('shares', 'hots', 'mostActiveUsers', 'pages', 'page', 'prev', 'next'));
    }
@@ -36,9 +31,9 @@ class ShareController
    {
       $id = $args['id'];
 
-      $share = q()->getShareByIdWithIikedUsers($id);
+      $share = q()->getShareById($id);
 
-      if ($share->id == null) {
+      if (!$share) {
          return view($res->withStatus(404), 'share.not-found');
       }
 
@@ -48,18 +43,9 @@ class ShareController
 
       $others = q()->getOtherShares($share);
 
-      $likedUsers = [];
-      if ($share->liked_users) {
-         $likedUsers = q()->getLikedUsers($share);
-      }
+      $likedUsers = q()->getLikedUsers($id);
 
-      $comments = db('select comments.*,
-         users.username, users.email
-         from comments
-         inner join users
-         on comments.user_id = users.id
-         where comments.share_id = ?
-         order by comments.created_at desc', [$share->id])->fetchAll();
+      $comments = q()->getComments($id);
 
       return view($res, 'share.single', compact('share', 'others', 'likedUsers', 'comments'));
    }
@@ -86,10 +72,7 @@ class ShareController
 
    public function comments($req, $res)
    {
-      extract($req->getParams());
-
-      db('insert into comments set user_id = ?, share_id = ?, body = ?', [auth('id'), $share_id, $comment]);
-
+      q()->saveComment($req);
       return back($res);
    }
 }
