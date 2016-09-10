@@ -17,14 +17,10 @@ $container['view'] = function($c) {
 
    $env = $view->getEnvironment();
 
-   $env->addGlobal('totalUsers', db('select count(id) as total from users')->fetch()->total);
-   $env->addGlobal('totalShares', db('select count(id) as total from shares')->fetch()->total);
-   $env->addGlobal('totalComments', db('select count(id) as total from comments')->fetch()->total);
-
-   $env->addGlobal('auth', [
-      'check' => auth()->check(),
-      'user' => auth()->user()
-   ]);
+   $twigGlobals = require 'twig-global.php';
+   foreach ($twigGlobals as $key => $global) {
+      $env->addGlobal($key, $global);
+   }
 
    $twigFunctions = require 'twig-function.php';
    foreach ($twigFunctions as $function) {

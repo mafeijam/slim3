@@ -23,6 +23,6 @@ return [
    }),
 
    'isDesktop' => new Twig_SimpleFunction('isDesktop', function() {
-      return preg_match('/windows|win32/i', $_SERVER['HTTP_USER_AGENT']) ? true : false;
+      return preg_match('/windows|win32/i', $_SERVER['HTTP_USER_AGENT']);
    }),
 ];

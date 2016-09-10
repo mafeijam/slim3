@@ -11,7 +11,7 @@ return [
 
    'jwt' => [
       'key' => env('JWT_KEY'),
-      'exp' => env('JWT_EXP', 3600)
+      'exp' => env('JWT_EXP', '+1 day')
    ],
 
    'database' => [

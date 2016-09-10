@@ -9,30 +9,35 @@
                <h4 class="media-heading">
                   <a class="share-title plink" href="/share/{{ share.id }}/{{ share.title | slug }}">{{ share.title }}</a>
                </h4>
-            <div style="display: flex; justify-content: space-between">
-               <div>
-                  <small><i class="fa fa-user mr-7"></i><span class="grey">{{ share.username }}</span></small>
-                  <small><i class="fa fa-tag mr-7"></i><span class="grey">{{ share.cat_name }}</span></small>
-                  <small><i class="fa fa-eye mr-7"></i><span class="grey">{{ share.views }}</span></small>
-                  <small><i class="fa fa-thumbs-o-up mr-7"></i><span class="grey">{{ share.likes }}</span></small>
-                  <small><i class="fa fa-comments-o mr-7"></i><span class="grey">{{ share.comments_count }}</span></small>
-                  <small>
-                     <i class="fa fa-clock-o mr-7"></i>
-                     <span data-placement="right" data-toggle="tooltip" title="{{ share.created_at }}"
-                           style="cursor: help;" class="grey">{{ share.created_at | diffForHumans }}</span>
-                  </small>
-               </div>
+            <div class="flex-box">
+               <div class="inner-box">
+                  <div>
+                     <small><i class="fa fa-user mr-7"></i><span class="grey">{{ share.username }}</span></small>
+                     <small><i class="fa fa-tag mr-7"></i><span class="grey">{{ share.cat_name }}</span></small>
+                     <small><i class="fa fa-eye mr-7"></i><span class="grey">{{ share.views }}</span></small>
+                  </div>
 
-               <div>
+                  <div>
+                     <small><i class="fa fa-thumbs-o-up mr-7"></i><span class="grey">{{ share.likes }}</span></small>
+                     <small><i class="fa fa-comments-o mr-7"></i><span class="grey">{{ share.comments_count }}</span></small>
+                     <small>
+                        <i class="fa fa-clock-o mr-7"></i>
+                        <span data-placement="right" data-toggle="tooltip" title="{{ share.created_at }}"
+                              style="cursor: help;" class="grey">{{ share.created_at | diffForHumans }}</span>
+                     </small>
+                  </div>
+               </div>
+               <div class="flex-right">
                   {% if share.last_reply %}
                      <small>
-                        最新回應：<span class="grey">{{ share.last_reply | diffForHumans }}</span>
+                        最新回應：<span data-placement="top" data-toggle="tooltip" title="{{ share.last_reply }}"
+                                       style="cursor: help;" class="grey">{{ share.last_reply | diffForHumans }}</span>
                         <span id="last-reply" data-placement="top" data-toggle="tooltip" title="{{ share.last_reply_username }}">
                            {{ gravatar(20, share.last_reply_email) | raw }}
                         </span>
                      </small>
                   {% else %}
-                     無回應
+                     <small>無回應</small>
                   {% endif %}
                </div>
             </div>

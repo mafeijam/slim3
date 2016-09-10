@@ -25,10 +25,13 @@
                <a>{{ gravatar(38, comment.email) | raw }}</a>
             </div>
             <div class="media-body">
-               <div><span class="grey">{{ comment.username }}</span></div>
                <small>
                   <span class="grey">#{{ loop.revindex }}</span>
-                  <i class="fa fa-clock-o mr-7"></i><span class="grey">{{ comment.created_at | diffForHumans }}</span>
+                  <i class="fa fa-user mr-7"></i>
+                  <span class="grey">{{ comment.username }}</span>
+                  <i class="fa fa-clock-o mr-7"></i>
+                  <span data-placement="right" data-toggle="tooltip" title="{{ comment.created_at }}"
+                        style="cursor: help;" class="grey">{{ comment.created_at | diffForHumans }}</span>
                </small>
                <div style="margin-top: 10px; font-size: 110%;">{{ comment.body }}</div>
             </div>

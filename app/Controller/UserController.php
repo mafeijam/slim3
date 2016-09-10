@@ -16,12 +16,12 @@ class UserController
                      where shares.user_id = ?
                      order by created_at desc limit 3', [auth('id')])->fetchAll();
 
-      $hasLikedShares = db('select group_concat(share_id) as liked_shares from share_like where user_id = ?',
-                           [auth('id')])->fetch()->liked_shares;
-      $likes = [];
-      if ($hasLikedShares) {
-         $likes = db('select * from shares where id in ('.$hasLikedShares.') and user_id != ?', [auth('id')])->fetchAll();
-      }
+      $likes = db('select *
+         from shares
+         where id in (
+            select share_id from share_like where user_id = ?)
+         and user_id != ?', [auth('id'), auth('id')])->fetchAll();
+
 
       return view($res, 'profile', compact('recents', 'likes'));
    }

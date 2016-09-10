@@ -5,15 +5,12 @@ session_start();
 require __DIR__ . '/../vendor/autoload.php';
 
 use App\App;
-use App\Query;
-use App\Auth\Auth;
-use App\Middleware\JwtCheck;
 use Dotenv\Dotenv;
 use Carbon\Carbon;
 use Whoops\Run as Whoops;
 use Whoops\Handler\PrettyPageHandler;
 
-if (file_exists('../.env')) {
+if (file_exists(__DIR__ . '/../.env')) {
    (new Dotenv(dirname(__DIR__)))->load();
 }
 
@@ -43,18 +40,6 @@ foreach (glob(__DIR__ . '/setup-*.php') as $setup) {
    require $setup;
 }
 
-$container['auth'] = function($c) {
-   return new Auth($c['jwt']);
-};
-
-$container['query'] = function($c) {
-   return new Query;
-};
-
 require 'global-middleware.php';
 
-$app->group('/api', function() use ($app){
-   require __DIR__ . '/../routes/api.php';
-})->add(new JwtCheck($config['jwt']['key'], ['/api/users']));
-
-require __DIR__ . '/../routes/web.php';
+require 'routes.php';

@@ -30,6 +30,10 @@ $app->group('/', function(){
    $this->post('comments', 'ShareController:comments')->add('commentsValidator');
 })->add('guard');
 
+$app->group('/admin', function(){
+   $this->get('/dashboard', 'AdminController:index');
+})->add('adminOnly')->add('guard');
+
 $app->get('/share/{id}[/{title}]', 'ShareController:show');
 
 //$app->get('/[{path:.*}]', 'AuthController:index');

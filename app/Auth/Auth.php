@@ -32,7 +32,7 @@ class Auth
       if ($user && password_verify($password, $user->password)) {
          db('update users set last_login = NOW() where id = ?', [$user->id]);
 
-         $time = isset($remember) ? time() + 3600*24*365 : time() + $exp;
+         $time = isset($remember) ? strtotime('+1 year') : strtotime($exp);
 
          $token = [
             'user' => [

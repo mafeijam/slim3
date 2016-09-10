@@ -15,3 +15,7 @@ $container['isActive'] = function($c) {
 $container['ajaxOnly'] = function($c) {
    return new App\Middleware\AjaxOnly;
 };
+
+$container['adminOnly'] = function($c) {
+   return new App\Middleware\AdminOnly;
+};
