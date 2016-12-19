@@ -21,6 +21,7 @@ class Auth
             $this->userProfile = db('select * from users where id = ?', [$this->authUser->id])->fetch();
          } catch (Exception $e) {
             $this->authUser = null;
+            setcookie('token', '', time() - 1);
          }
       }
    }
@@ -28,9 +29,9 @@ class Auth
    public function login($username, $password, $remember)
    {
       extract($this->jwt);
-      $user = db('select id, username, password from users where username = ?', [$username])->fetch();
+      $user = db('select id, username, password, last_login from users where username = ?', [$username])->fetch();
       if ($user && password_verify($password, $user->password)) {
-         db('update users set last_login = NOW() where id = ?', [$user->id]);
+         db('update users set last_login = NOW(), last_login_display = ? where id = ?', [$user->last_login, $user->id]);
 
          $time = isset($remember) ? strtotime('+1 year') : strtotime($exp);
 

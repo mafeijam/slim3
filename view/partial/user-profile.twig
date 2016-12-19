@@ -13,7 +13,7 @@
       </p>
       <p>上一次登入：
          <span class="profile">
-            {{ auth.user.last_login }}
+            {{ auth.user.last_login_display ?? 'N/A' }}
          </span>
       </p>
       {% if auth.user.github %}

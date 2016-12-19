@@ -4,6 +4,10 @@ $app->get('/', 'ShareController:index');
 
 $app->get('/active/{code}', 'AuthController:active');
 
+$app->get('/about', 'PageController:about');
+$app->get('/members', 'PageController:members');
+$app->get('/member/{name}', 'PageController:membersShow');
+
 $app->group('/', function(){
    $this->get('login', 'PageController:login');
    $this->post('login', 'AuthController:login')->add('loginValidator');
@@ -21,8 +25,8 @@ $app->group('/', function(){
    $this->get('profile', 'UserController:index');
    $this->get('change-password', 'PasswordController:index');
    $this->post('change-password', 'PasswordController:update')->add('changePasswordValidator');
-   $this->get('update-profile','PageController:update');
-   $this->post('update-profile','UserController:update')->add('updateValidator');
+   $this->get('update-profile', 'PageController:update');
+   $this->post('update-profile', 'UserController:update')->add('updateValidator');
    $this->post('reactive', 'AuthController:reactive');
    $this->get('share', 'ShareController:create')->add('isActive');
    $this->post('share', 'ShareController:save')->add('shareValidator');
@@ -35,5 +39,9 @@ $app->group('/admin', function(){
 })->add('adminOnly')->add('guard');
 
 $app->get('/share/{id}[/{title}]', 'ShareController:show');
+
+$app->get('/ping', function(){
+   return 'pong';
+});
 
 //$app->get('/[{path:.*}]', 'AuthController:index');

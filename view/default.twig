@@ -19,7 +19,7 @@
       <script src="{{ base_url() }}/js/bs-hover-dropdown.js"></script>
       <script src="{{ base_url() }}/js/marked.min.js"></script>
    </head>
-   <body>
+   <body style="background: url({{bg}}) repeat fixed;">
       <div id="main">
          {% include 'partial/nav.twig' %}
 
@@ -38,6 +38,13 @@
       {% endif %}
 
       <script src="{{ base_url() }}/js/home.js"></script>
+      <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+      <script>
+         /*var socket = io('http://localhost:8080');
 
+         socket.on('vistor', function(data){
+            $('#online-count').html(data)
+         })*/
+      </script>
    </body>
 </html>

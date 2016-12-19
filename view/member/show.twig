@@ -1,0 +1,47 @@
+{% extends 'default.twig' %}
+
+{% block body %}
+   <div class="row">
+      <div class="col-md-3">
+         <div class="panel panel-info">
+
+            <div class="panel-heading">會員資料</div>
+            <div class="panel-body">
+               <p style="text-align: center;">{{ gravatar(200, member.email) | raw }}</p>
+               <hr>
+               <p>使用者：<span class="profile">{{ member.username }}</span></p>
+               <p>註冊於：
+                  <span style="cursor: help;" class="profile" data-placement="right" data-toggle="tooltip" title="{{ member.joined_at }}">
+                     {{ member.joined_at | diffForHumans }}
+                  </span>
+               </p>
+               {% if auth.check and auth.user.id != member.id %}
+                  <hr>
+                  <div style="text-align: center;">
+                     <div class="btn btn-primary">關注</div>
+                  </div>
+
+               {% endif %}
+            </div>
+         </div>
+
+         <div class="panel panel-info">
+            <div class="panel-heading">統計資料</div>
+            <div class="panel-body" style="display: flex; justify-content: space-between">
+               <div style="text-align: center;">
+                  <p class="counts">{{ shared(member.id) }}</p>
+                  <p>分享</p>
+               </div>
+               <div style="text-align: center;">
+                  <p class="counts">{{ commented(member.id) }}</p>
+                  <p>回應</p>
+               </div>
+            </div>
+         </div>
+
+      </div>
+   </div>
+   <script>
+      $('[data-toggle="tooltip"]').tooltip()
+   </script>
+{% endblock %}

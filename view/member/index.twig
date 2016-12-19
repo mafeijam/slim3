@@ -1,0 +1,22 @@
+{% extends 'default.twig' %}
+
+{% block body %}
+   <div class="row" style="text-align: center;">
+
+      {% for member in members %}
+         <a class="plink" href="/member/{{ member.username }}">
+            <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+               <div>{{ gravatar(120, member.email) | raw }}</div>
+               <div class="member">{{ member.username }}</div>
+            </div>
+         </a>
+      {% else %}
+         <div class="panel panel-default">
+            <div class="panel-body">
+               未有用戶註冊
+            </div>
+         </div>
+      {% endfor %}
+
+   </div>
+{% endblock %}

@@ -17,20 +17,32 @@ $container['view'] = function($c) {
 
    $env = $view->getEnvironment();
 
-   $twigGlobals = require 'twig-global.php';
-   foreach ($twigGlobals as $key => $global) {
-      $env->addGlobal($key, $global);
+   foreach (glob(__DIR__ . '/twig-*.php') as $twig) {
+      $type = substr(basename($twig, '.php'), 5);
+      $method = 'add'.ucfirst($type);
+      $data = require $twig;
+      switch ($type) {
+         case 'global':
+            foreach ($data as $k => $d) {
+               $env->$method($k, $d);
+            }
+            break;
+
+         default:
+            foreach ($data as $d) {
+               $env->$method($d);
+            }
+            break;
+      }
    }
 
-   $twigFunctions = require 'twig-function.php';
-   foreach ($twigFunctions as $function) {
-      $env->addFunction($function);
-   }
-
-   $twigFilters = require 'twig-filter.php';
-   foreach ($twigFilters as $filter) {
-      $env->addFilter($filter);
-   }
+   $bg = [
+      '/bg/geometry2.png',
+      '/bg/photography.png',
+      '/bg/skulls.png'
+   ];
+   shuffle($bg);
+   $env->addGlobal('bg', $bg[0]);
 
    return $view;
 };

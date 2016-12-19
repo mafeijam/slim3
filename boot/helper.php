@@ -19,6 +19,15 @@ function q() {
    return app('query');
 }
 
+function cache($key = null, $value = null)
+{
+   if ($key) {
+      return $value ? app('cache')->set($key, $value) : app('cache')->get($key);
+   }
+
+   return app('cache');
+}
+
 function view($res, $file, $data = []) {
    return app('view')->render($res, str_replace('.', DIRECTORY_SEPARATOR, $file).'.twig', $data);
 }

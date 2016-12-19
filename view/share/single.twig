@@ -52,9 +52,9 @@
 
       $('textarea').keyup(function(){
          if ($(this).val().trim()) {
-            $('button').show()
+            $('button').attr('disabled', false)
          } else {
-            $('button').hide()
+            $('button').attr('disabled', true)
          }
       })
    </script>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Middleware\Validator;
 use Respect\Validation\Validator as v;
 
 v::with('App\\Validation\\Rules');
@@ -21,7 +22,7 @@ $container['forgetValidator'] = function($c) {
 
    $customErrors = array_get($c['customErrors'], ['notEmpty', 'email']);
 
-   return new App\Middleware\Validator($rules, $customErrors);
+   return new Validator($rules, $customErrors);
 };
 
 $container['loginValidator'] = function($c) {
@@ -32,7 +33,7 @@ $container['loginValidator'] = function($c) {
 
    $customErrors = array_get($c['customErrors'], ['notEmpty']);
 
-   return new App\Middleware\Validator($rules, $customErrors, 'login');
+   return new Validator($rules, $customErrors, 'login');
 };
 
 $container['registerValidator'] = function($c) {
@@ -45,7 +46,7 @@ $container['registerValidator'] = function($c) {
 
    $customErrors = array_get($c['customErrors'], ['notEmpty', 'noWhitespace', 'length', 'equals', 'email']);
 
-   return new App\Middleware\Validator($rules, $customErrors);
+   return new Validator($rules, $customErrors);
 };
 
 $container['changePasswordValidator'] = function($c) {
@@ -57,7 +58,7 @@ $container['changePasswordValidator'] = function($c) {
 
    $customErrors = array_get($c['customErrors'], ['notEmpty', 'noWhitespace', 'length', 'equals']);
 
-   return new App\Middleware\Validator($rules, $customErrors);
+   return new Validator($rules, $customErrors);
 };
 
 $container['resetPasswordValidator'] = function($c) {
@@ -68,7 +69,7 @@ $container['resetPasswordValidator'] = function($c) {
 
    $customErrors = array_get($c['customErrors'], ['notEmpty', 'noWhitespace', 'length', 'equals']);
 
-   return new App\Middleware\Validator($rules, $customErrors);
+   return new Validator($rules, $customErrors);
 };
 
 $container['updateValidator'] = function($c) {
@@ -79,7 +80,7 @@ $container['updateValidator'] = function($c) {
 
    $customErrors = array_get($c['customErrors'], ['notEmpty', 'email']);
 
-   return new App\Middleware\Validator($rules, $customErrors);
+   return new Validator($rules, $customErrors);
 };
 
 $container['shareValidator'] = function($c) {
@@ -91,7 +92,7 @@ $container['shareValidator'] = function($c) {
 
    $customErrors = array_get($c['customErrors'], ['notEmpty']);
 
-   return new App\Middleware\Validator($rules, $customErrors);
+   return new Validator($rules, $customErrors);
 };
 
 $container['commentsValidator'] = function($c) {
@@ -101,5 +102,5 @@ $container['commentsValidator'] = function($c) {
 
    $customErrors = array_get($c['customErrors'], ['notEmpty']);
 
-   return new App\Middleware\Validator($rules, $customErrors);
+   return new Validator($rules, $customErrors);
 };

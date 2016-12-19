@@ -12,13 +12,13 @@ return [
       return db('select * from share_like where user_id = ? and share_id = ?', [$id, $shareId])->rowCount();
    }),
 
-   'shared' => new Twig_SimpleFunction('shared', function(){
-      $id = auth()->check() ? auth('id') : null;
+   'shared' => new Twig_SimpleFunction('shared', function($other = null){
+      $id = is_null($other) ? auth('id') : $other;
       return db('select count(id) as count from shares where user_id = ?', [$id])->fetch()->count;
    }),
 
-   'commented' => new Twig_SimpleFunction('commented', function(){
-      $id = auth()->check() ? auth('id') : null;
+   'commented' => new Twig_SimpleFunction('commented', function($other = null){
+      $id = is_null($other) ? auth('id') : $other;
       return db('select count(id) as count from comments where user_id = ?', [$id])->fetch()->count;
    }),
 

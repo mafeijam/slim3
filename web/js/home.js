@@ -9,4 +9,3 @@ $('body').on('click', 'button', function(){
    $(this).button('loading')
 })
 
-$('[data-toggle="tooltip"]').tooltip()

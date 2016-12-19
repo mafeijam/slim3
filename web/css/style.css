@@ -10,7 +10,6 @@ body {
    padding-top: 70px;
    font-family: 'Noto Sans TC';
    color: #1C1C1C;
-   background: url(/bg/geometry2.png) repeat fixed;
 }
 
 #main {
@@ -20,8 +19,17 @@ body {
 footer {
    height: 60px;
    width: 100%;
-   color: #828282;
-   background: url(/bg/brickwall.png) repeat fixed;
+   color: #FFFFFB;
+   background: #1C1C1C;
+}
+
+footer a {
+   color: #FFFFFB;
+}
+
+footer a:hover {
+   color: #EEE;
+   text-decoration: none;
 }
 
 a, button, input.form-control, textarea.form-control, select.form-control {
@@ -140,6 +148,12 @@ span .gravatar {
   display: flex;
 }
 
+.member {
+   font-size: 120%;
+   padding: 10px 0;
+   text-align: center;
+}
+
 @media (max-width: 480px) {
   .flex-box {
       flex-direction: column;
@@ -149,6 +163,16 @@ span .gravatar {
   }
   .inner-box {
       display: block;
+  }
+  #footer-box {
+   flex-direction: column;
+   padding: 10px;
+  }
+  #footer-box span {
+   padding: 10px;
+  }
+  footer {
+   height: auto;
   }
 }
 
@@ -179,11 +203,11 @@ span .gravatar {
 }
 
 #github {
-   color: #828282;
+   color: ##FFFFFB;
 }
 
 #github:hover {
-   color: #1C1C1C;
+   color: #EEE;
 }
 
 #github-link {
